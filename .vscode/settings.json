@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^cd /Users/takafumi/projects/ai-agent-sns/tmp_analysis && for f in 0-tzlNCwwWo 07iN7yIH-NU 5I2Gz4lfCHY brd6UHlvYJE btZkH1xVuF4 h6wwUUyEBCA iiReCo2JIug Lar7-N2Mn98 yTYD3H22fF4 ZQidQOAZfog; do echo \"\\$f: \\$\\(python3 -c \"import json; d=json\\.load\\(open\\('\\$f\\.info\\.json'\\)\\); print\\(d\\.get\\('upload_date',''\\), d\\.get\\('title',''\\)\\)\"\\)\"; done$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
