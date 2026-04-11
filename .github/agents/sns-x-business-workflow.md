@@ -229,6 +229,26 @@ output/YYYY-MM-DD_{title}_{video_id}/
 }
 ```
 
+
+---
+
+## STEP 5: フィードバック
+
+STEP 4（履歴記録）完了後、`sns-x-feedback-agent` を実行する。
+
+1. ユーザーにフィードバックを確認する
+2. 内容を分類し、関連エージェント/スキル/プロンプト/インストラクションファイルを更新する
+3. `data/feedback_history.json` に記録する
+
+
+## STEP 6: アナリティクス（7日トリガー）
+
+`sns-x-analytics-agent` を起動する。
+
+1. `data/analytics_history.json` の `last_run` を確認する
+2. 7日以上経過している場合のみ分析を実行する
+3. パフォーマンスレポートをユーザーに提示する
+4. `analytics_history.json` を更新する
 ---
 
 ## ブランド定数

@@ -1,4 +1,12 @@
 {
   "_comment": "X投稿済み動画の履歴。video_id が存在する動画はリサーチ候補から除外する。",
-  "posted": []
+  "posted": [
+    {
+      "video_id": "h6wwUUyEBCA",
+      "title": "【1日密着】社長就任後2年で利益約50倍に！1兆円企業を目指すネイルサービス経営のしごと／コンヴァノ",
+      "posted_date": "2026-04-11",
+      "used_sets": [2, 3, 5],
+      "output_dir": "output/2026-04-11_社長就任後2年で利益50倍_コンヴァノ_h6wwUUyEBCA/"
+    }
+  ]
 }
