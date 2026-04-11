@@ -17,7 +17,7 @@ tools:
 
 ## 入力
 - `video_id`（ユーザーが選択）
-- `output/.../review_feedback.md`（差し戻し時のみ）
+- `outputs/.../review_feedback.md`（差し戻し時のみ）
 
 ## 処理手順
 
@@ -43,14 +43,15 @@ yt-dlp --write-info-json --write-subs --sub-langs ja \
 | 3 | 仕事観・意思決定の哲学 | なぜその仕事をするか・判断軸 |
 | 4 | 組織文化・人の魅力 | 人間関係・雰囲気・価値観 |
 | 5 | 転職/副業/キャリアアップ示唆 | 視聴者が明日使える学び |
+| 6 | 数字・実績・ファクト | 具体的数値・成果・比較データ |
 
-### 4. スクリーンショット生成（各セット4〜5枚）
+### 4. スクリーンショット生成（各セット5枚固定）
 ```bash
 ffmpeg -loglevel error -ss {timestamp} \
   -i "tmp_analysis/{video_id}.webm" \
   -frames:v 1 \
   -vf "subtitles=tmp_analysis/{video_id}.ja.vtt" \
-  "output/{dir}/{set}/screenshot{n}.png"
+  "outputs/{dir}/{set}/screenshot{n}.png"
 ```
 
 品質チェック（各画像）: 目つぶりNG / ブレNG / 字幕可読 / 話者がフレーム内
@@ -77,10 +78,10 @@ ffmpeg -loglevel error -ss {timestamp} \
 
 ### 6. ファイル保存
 ```
-output/YYYY-MM-DD_{title}_{video_id}/
+outputs/YYYY-MM-DD_{title}_{video_id}/
   video_info.txt   # video_id, title, url, upload_date, review_round
-  1/ post.txt, screenshots_meta.txt, screenshot1-4.png
-  2/ ～ 5/（同様）
+  1/ post.txt, screenshots_meta.txt, screenshot1-5.png
+  2/ ～ 6/（同様）
 ```
 
 ## 差し戻し対応

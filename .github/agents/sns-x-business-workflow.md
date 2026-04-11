@@ -27,18 +27,23 @@ STEP 1: リサーチ（自動）
   └─ sns-x-research-agent を実行
   └─ 出力: tmp_analysis/candidate_videos.md
 
+STEP 1-R: リサーチレビュー（自動・最大10回ループ）
+  └─ sns-x-research-review-agent を実行
+  ├─ NG → research_review_feedback.md を生成 → STEP 1 に差し戻し
+  └─ OK → 候補リストに PASSED を追記
+
 [USER DECISION 1] 候補リストを提示 → ユーザーが動画番号を選択
 
 STEP 2: 編集制作（自動・最大5回ループ）
   └─ sns-x-editorial-agent を実行
-  └─ 出力: output/YYYY-MM-DD_title_videoId/{1-5}/
+  └─ 出力: outputs/YYYY-MM-DD_title_videoId/{1-6}/
 
 STEP 3: レビュー（自動・最大5回ループ）
   └─ sns-x-review-agent を実行
   ├─ NG → review_feedback.md を生成 → STEP 2 に差し戻し
   └─ OK → review_passed.md を生成
 
-[USER DECISION 2] 5セットを提示 → ユーザーがセット番号を選択
+[USER DECISION 2] 6セットを提示 → ユーザーがセット番号を選択
 
 STEP 4: 履歴記録（自動）
   └─ data/posted_history.json を更新
@@ -61,10 +66,11 @@ yt-dlp --flat-playlist --dump-json \
 取得後の処理:
 1. `data/posted_history.json` を読み込み、投稿済み video_id を除外する
 2. 以下の基準でスコアリングする（0〜100点）:
-   - 再生数（チャンネル平均比）: 30点
-   - 新しさ（7日以内=25点 / 30日以内=15点 / 90日以内=5点）: 25点
-   - タイトル魅力度（職種・会社名・数字含有）: 25点
-   - コメント反応推定（いいね率）: 20点
+   - 再生数（チャンネル平均比）: 25点
+   - 新しさ（7日以内=20点 / 30日以内=14点 / 90日以内=5点）: 20点
+   - タイトル魅力度（職種・会社名・数字・密着ワード含有）: 20点
+   - ビジュアル魅力度（サムネイルに顼・数字・インパクトワード）: 20点
+   - コメント反応推定（いいね率）: 15点
 3. タイトルに「ライブ」「雑談」「告知」を含む動画は除外する
 4. 上位10件を `tmp_analysis/candidate_videos.md` に書き出す
 
@@ -81,6 +87,19 @@ yt-dlp --flat-playlist --dump-json \
 
 ユーザーへの確認メッセージ:
 > 候補リストを生成しました。投稿したい動画の番号を教えてください（1〜10）。
+
+---
+
+## STEP 1-R: リサーチレビュー実行
+
+`sns-x-research-review-agent` の処理を実行する。
+
+- `tmp_analysis/candidate_videos.md` を読み込み、R1～R10のチェックリストを検証する。
+- NG の場合: `tmp_analysis/research_review_feedback.md` を生成し、STEP 1 に差し戻す（最大10回ループ）。
+- OK の場合: 候補リストの末尾に PASSED を追記し、ユーザーに投稿したい動画番号を問う。
+
+ユーザーへの確認メッセージ:
+> リサーチレビューが完了しました。投稿したい動画の番号を教えてください（1～10）。
 
 ---
 
@@ -101,7 +120,7 @@ yt-dlp --write-info-json --write-subs --sub-langs ja \
 - 重要発言・制度・価値観キーワードを抽出
 - 繰り返し言及区間・熱量が高い区間を優先マーキング
 
-### 2-3. 5訴求軸へのマッピング
+### 2-3. 6訴求軸へのマッピング
 | セット | 訴求軸 | フォーカス |
 |---|---|---|
 | 1 | 福利厚生・制度の具体性 | 制度名・金額・日数など具体値 |
@@ -109,14 +128,15 @@ yt-dlp --write-info-json --write-subs --sub-langs ja \
 | 3 | 仕事観・意思決定の哲学 | なぜその仕事をするか・判断軸 |
 | 4 | 組織文化・人の魅力 | 人間関係・雰囲気・価値観 |
 | 5 | 転職/副業/キャリアアップ示唆 | 視聴者が明日使える学び |
+| 6 | 数字・実績・ファクト | 具体的数値・成果・比較データ |
 
-### 2-4. スクリーンショット生成（各セット4〜5枚）
+### 2-4. スクリーンショット生成（各セット5枚固定）
 ```bash
 ffmpeg -loglevel error -ss {timestamp} \
   -i "tmp_analysis/{video_id}.webm" \
   -frames:v 1 \
   -vf "subtitles=tmp_analysis/{video_id}.ja.vtt" \
-  "output/{dir}/{set}/screenshot{n}.png"
+  "outputs/{dir}/{set}/screenshot{n}.png"
 ```
 
 品質チェック（各画像で確認）:
@@ -149,13 +169,13 @@ ffmpeg -loglevel error -ss {timestamp} \
 
 ### 2-6. ファイル保存構成
 ```
-output/YYYY-MM-DD_{title}_{video_id}/
+outputs/YYYY-MM-DD_{title}_{video_id}/
   video_info.txt       # video_id, title, url, upload_date, review_round
   1/
     post.txt
     screenshots_meta.txt
-    screenshot1.png ～ screenshot4.png
-  2/ ～ 5/（同様）
+    screenshot1.png ～ screenshot5.png
+  2/ ～ 6/（同様）
 ```
 
 ---
@@ -176,13 +196,13 @@ output/YYYY-MM-DD_{title}_{video_id}/
 | A5 | ハッシュタグ | 3個以内、#しごとリーチ または #キャリア を含む |
 | A6 | 誇張表現なし | 「必ず」「絶対」「確実に」等の断定表現がない |
 | A7 | 事実整合 | 数値・制度名・発言が動画根拠に基づいている |
-| A8 | 訴求軸の重複なし | 5セット間で訴求軸が重複していない |
+| A8 | 訴求軸の重複なし | 6セット間で訴求軸が重複していない |
 | A9 | 明日の学び | 転職/副業/キャリアに即活用できる学びが含まれる |
 
 **B. スクリーンショット（全セット）**
 | # | 項目 | OK基準 |
 |---|---|---|
-| B1 | 枚数 | 各セット4〜5枚 |
+| B1 | 枚数 | 各セット5枚固定 |
 | B2 | 字幕入り | 全枚数に字幕テキストが表示されている |
 | B3 | 人物品質 | 目つぶりなし・ブレなし |
 | B4 | 字幕可読性 | 小さなサムネイルでも読める |
@@ -192,7 +212,7 @@ output/YYYY-MM-DD_{title}_{video_id}/
 
 ### 判定と出力
 
-**OK の場合** → `output/.../review_passed.md` を生成:
+**OK の場合** → `outputs/.../review_passed.md` を生成:
 ```markdown
 # レビュー結果: PASSED
 - 確認日時: YYYY-MM-DD HH:MM
@@ -201,7 +221,7 @@ output/YYYY-MM-DD_{title}_{video_id}/
 - 全セット評価: セット1: フック A / 保存 A / 共感 B ...
 ```
 
-**NG の場合** → `output/.../review_feedback.md` を生成 → STEP 2 に差し戻し:
+**NG の場合** → `outputs/.../review_feedback.md` を生成 → STEP 2 に差し戻し:
 ```markdown
 # レビュー結果: NG（差し戻し N回目）
 | セット | 項目 | 問題内容 | 修正方針 |
@@ -215,7 +235,7 @@ output/YYYY-MM-DD_{title}_{video_id}/
 ## STEP 4: 投稿案選択 → 履歴記録
 
 ユーザーへの確認メッセージ:
-> レビューが完了しました。投稿するセット番号を選んでください（1〜5）。
+> レビューが完了しました。投稿するセット番号を選んでください（1〜6）。
 > （推奨: セットN ← review_passed.md の推奨）
 
 セット確定後、`data/posted_history.json` に以下を追記する:
@@ -225,7 +245,7 @@ output/YYYY-MM-DD_{title}_{video_id}/
   "title": "動画タイトル",
   "posted_date": "YYYY-MM-DD",
   "used_set": 3,
-  "output_dir": "output/YYYY-MM-DD_title_videoId/"
+  "output_dir": "outputs/YYYY-MM-DD_title_videoId/"
 }
 ```
 
@@ -253,7 +273,7 @@ STEP 4（履歴記録）完了後、`sns-x-feedback-agent` を実行する。
 
 ## ブランド定数
 - 投稿コンセプト: 1投稿10秒で学べる。情熱・実務・文化を短く深く。
-- 訴求軸5種: 福利厚生 / 若手裁量 / 仕事観 / 組織文化 / キャリア示唆
+- 訴求軸6種: 福利厚生 / 若手裁量 / 仕事観 / 組織文化 / キャリア示唆 / 数字・実績・ファクト
 - 禁止表現: 断定・誇張（「必ず儲かる」「絶対成功」等）
 - ターゲット: 転職検討者・副業検討者・キャリアアップ志向層
 - 画像コンセプト: 濃紺(#1a3a52)→スレートグレー(#2c3e50)グラデ、シアン(#00BCD4)矢印、金色(#FFD700)「10」

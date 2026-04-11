@@ -5,8 +5,21 @@
       "video_id": "h6wwUUyEBCA",
       "title": "【1日密着】社長就任後2年で利益約50倍に！1兆円企業を目指すネイルサービス経営のしごと／コンヴァノ",
       "posted_date": "2026-04-11",
-      "used_sets": [2, 3, 5],
+      "used_sets": [
+        2,
+        3,
+        5
+      ],
       "output_dir": "output/2026-04-11_社長就任後2年で利益50倍_コンヴァノ_h6wwUUyEBCA/"
+    },
+    {
+      "video_id": "8up4-f6ZSz4",
+      "title": "【1日密着】25歳で社長賞常連の圧倒的証券営業エースに密着！／岡三証券",
+      "posted_date": "2026-04-11",
+      "used_sets": [
+        2
+      ],
+      "output_dir": "output/2026-01-29_25歳で社長賞常連_岡三証券_8up4-f6ZSz4/"
     }
   ]
 }
