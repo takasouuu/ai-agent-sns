@@ -95,14 +95,36 @@ TWITTER_ACCESS_SECRET= os.environ.get("TWITTER_ACCESS_SECRET", "")
 
 # ニュース検索キーワード（X検索クエリ用）
 NEWS_QUERY_KEYWORDS = [
-    "日経平均 OR 日経225 OR 東証",
-    "米国株 OR S&P500 OR NASDAQ",
-    "NISA OR iDeCo OR 新NISA",
-    "決算 OR 上方修正 OR 下方修正",
-    "日銀 OR 利上げ OR 利下げ",
+    "日経平均 OR 日経225 OR 東証 OR 日本株",           # 日本市場全般
+    "米国株 OR S&P500 OR NASDAQ OR ダウ",             # 米国市場
+    "決算 OR 上方修正 OR 下方修正 OR 増配",           # 決算・業績
+    "日銀 OR 利上げ OR 利下げ OR 植田総裁",           # 日銀・金融政策
+    "FRB OR FOMC OR パウエル OR 利下げ見通し",        # FRB・米金融政策
+    "IPO OR 新規上場 OR MBO OR TOB OR M&A",           # コーポレートアクション
+    "ストップ高 OR 急騰 OR 急落 OR 大暴落",           # 急変動
+    "NISA OR iDeCo OR 新NISA OR 高配当",              # 個人投資家関連
+    "テクニカル OR ゴールデンクロス OR 移動平均",      # テクニカル分析
+    "決算またぎ OR 本決算 OR 四半期決算",             # 決算イベント
 ]
 NEWS_MAX_RESULTS = 20          # 1キーワードあたり最大取得件数
-NEWS_HOURS_BACK  = 6           # 過去何時間以内のツイートを対象にするか
+NEWS_HOURS_BACK  = 24          # 過去何時間以内のツイートを対象にするか（24h以内）
+
+# RSS フィード（ニュースサイト）
+NEWS_RSS_FEEDS = [
+    ("Yahoo Finance JP",    "https://finance.yahoo.co.jp/rss/news"),
+    ("Reuters JP Business", "https://jp.reuters.com/rssFeed/businessNews/"),
+    ("Google News 株式",    "https://news.google.com/rss/search?q=株式投資+OR+決算+OR+日経平均&hl=ja&gl=JP&ceid=JP:ja"),
+]
+
+# note RSS フィード（投資タグ新着）
+NOTE_RSS_FEEDS = [
+    "https://note.com/search/rss?q=株式投資&context=note&mode=recent",
+    "https://note.com/search/rss?q=日本株&context=note&mode=recent",
+    "https://note.com/search/rss?q=決算またぎ&context=note&mode=recent",
+]
+
+# Google Custom Search API（任意）
+SERPAPI_KEY = os.environ.get("SERPAPI_KEY", "")
 
 # ─────────────────────────────────────────────
 # ffmpeg / yt-dlp

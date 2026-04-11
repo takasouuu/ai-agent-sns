@@ -20,6 +20,8 @@ from .config import (
     NEWS_HOURS_BACK,
     NEWS_MAX_RESULTS,
     NEWS_QUERY_KEYWORDS,
+    NEWS_RSS_FEEDS,
+    NOTE_RSS_FEEDS,
     TWITTER_BEARER_TOKEN,
 )
 
@@ -205,3 +207,252 @@ def _mock_news_items() -> list[dict[str, Any]]:
             "query": "日銀 OR 利上げ OR 利下げ",
         },
     ]
+
+
+# ──────────────────────────────────────────────────────────────
+# RSS ニュースフィード取得
+# ──────────────────────────────────────────────────────────────
+def fetch_rss_news(
+    hours_back: int = NEWS_HOURS_BACK,
+) -> list[dict[str, Any]]:
+    """
+    RSS フィードから投資関連ニュース記事を取得する。
+
+    Parameters
+    ----------
+    hours_back : 過去何時間分を対象にするか
+
+    Returns
+    -------
+    list of dict
+        {source, title, summary, published_at, url}
+    """
+    try:
+        import feedparser  # type: ignore
+    except ImportError:
+        logger.warning("feedparser not installed. Run: pip install feedparser")
+        return []
+
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours_back)
+    articles: list[dict[str, Any]] = []
+
+    all_feeds = list(NEWS_RSS_FEEDS) + [(f"note({i+1})", url) for i, url in enumerate(NOTE_RSS_FEEDS)]
+
+    for source, url in all_feeds:
+        try:
+            feed = feedparser.parse(url)
+            for entry in feed.entries:
+                pub = getattr(entry, "published_parsed", None)
+                if pub:
+                    pub_dt = datetime(*pub[:6], tzinfo=timezone.utc)
+                    if pub_dt < cutoff:
+                        continue
+                title   = entry.get("title", "").strip()
+                summary = re.sub(r"<[^>]+>", "", entry.get("summary", ""))[:200].strip()
+                articles.append(
+                    {
+                        "source":       source,
+                        "title":        title,
+                        "summary":      summary,
+                        "published_at": pub_dt.strftime("%Y-%m-%d %H:%M") if pub else "",
+                        "url":          entry.get("link", ""),
+                        "engagement":   0,  # RSS は engagement 不明
+                    }
+                )
+            logger.info("RSS [%s]: %d件取得", source, len(articles))
+        except Exception as exc:
+            logger.error("RSS [%s] 取得失敗: %s", source, exc)
+
+    return articles
+
+
+# ──────────────────────────────────────────────────────────────
+# トピック集約 + スコアリング
+# ──────────────────────────────────────────────────────────────
+_CATEGORY_KEYWORDS: dict[str, list[str]] = {
+    "決算":         ["決算", "上方修正", "下方修正", "増配", "配当", "四半期"],
+    "要人発言":     ["日銀", "植田", "FRB", "パウエル", "財務大臣", "国債", "利上げ", "利下げ", "金融政策"],
+    "IPO/CA":       ["IPO", "新規上場", "MBO", "TOB", "M&A", "増資", "自社株買い"],
+    "銘柄急変動":   ["ストップ高", "ストップ安", "急騰", "急落", "大暴落", "最高値更新"],
+    "テクニカル":   ["ゴールデンクロス", "デッドクロス", "移動平均", "チャート", "テクニカル", "支持線", "抵抗線"],
+    "マクロ":       ["CPI", "GDP", "雇用統計", "インフレ", "円安", "円高", "USDJPY", "為替"],
+    "銘柄分析":     ["銘柄", "セクター", "PER", "PBR", "ROE", "高配当", "成長株"],
+}
+
+
+def _classify_category(text: str) -> str:
+    for cat, kws in _CATEGORY_KEYWORDS.items():
+        if any(kw in text for kw in kws):
+            return cat
+    return "その他"
+
+
+def score_topic(
+    topic: dict[str, Any],
+    now: datetime | None = None,
+) -> int:
+    """
+    トピックをスコアリングする（0〜100点）。
+
+    指標             配点
+    鮮度             25
+    エンゲージメント  20
+    市場インパクト    20
+    トピック多様性    15
+    投稿文可能性      10
+    コーポレートアクション 10
+    """
+    if now is None:
+        now = datetime.now(timezone.utc)
+
+    score = 0
+
+    # 鮮度 (25点)
+    pub_str = topic.get("published_at", "")
+    if pub_str:
+        try:
+            pub_dt = datetime.strptime(pub_str, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+            hours_ago = (now - pub_dt).total_seconds() / 3600
+            score += 25 if hours_ago <= 6 else 20 if hours_ago <= 12 else 14 if hours_ago <= 24 else 5
+        except ValueError:
+            pass
+
+    # エンゲージメント (20点)
+    eng = topic.get("engagement", 0)
+    score += 20 if eng >= 1000 else 15 if eng >= 500 else 10 if eng >= 100 else 5 if eng >= 10 else 0
+
+    # 市場インパクト推定 (20点) — 指数・大型銘柄を優先
+    title = topic.get("title", "") + topic.get("summary", "")
+    if any(w in title for w in ["日経", "S&P", "NASDAQ", "日銀", "FRB", "FOMC"]):
+        score += 20
+    elif any(w in title for w in ["決算", "銘柄", "セクター"]):
+        score += 12
+    else:
+        score += 5
+
+    # トピック多様性 (15点) — sources 数
+    sources = topic.get("sources", [])
+    score += 15 if len(sources) >= 3 else 10 if len(sources) >= 2 else 5
+
+    # 投稿文可能性 (10点) — 数値データあり
+    if re.search(r"\d+[%円兆億万ドル.+\-]+", title):
+        score += 10
+    else:
+        score += 5
+
+    # コーポレートアクション (10点)
+    cat = topic.get("category", "")
+    if cat == "IPO/CA":
+        score += 10
+    elif cat == "決算":
+        score += 8
+
+    return min(score, 100)
+
+
+def aggregate_and_score_topics(
+    x_items:  list[dict[str, Any]],
+    rss_items: list[dict[str, Any]],
+    hours_back: int = NEWS_HOURS_BACK,
+) -> list[dict[str, Any]]:
+    """
+    X ツイートと RSS 記事を集約し、重複排除後にスコアリングして返す。
+
+    Returns
+    -------
+    上位10件のトピックリスト（score 降順）
+    """
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(hours=hours_back)
+
+    # X アイテムを topic 形式に変換
+    topics: list[dict[str, Any]] = []
+    for item in x_items:
+        title = item.get("topic", item.get("summary", ""))[:60]
+        cat   = _classify_category(title + item.get("summary", ""))
+        tweets = item.get("tweets", [])
+        engagement = sum(t.get("like_count", 0) + t.get("rt_count", 0) for t in tweets)
+        pub_str = tweets[0].get("created_at", "") if tweets else ""
+        if pub_str:
+            try:
+                pub_str = datetime.strptime(pub_str[:16], "%Y-%m-%dT%H:%M").strftime("%Y-%m-%d %H:%M")
+            except ValueError:
+                pub_str = now.strftime("%Y-%m-%d %H:%M")
+        else:
+            pub_str = now.strftime("%Y-%m-%d %H:%M")
+
+        topics.append(
+            {
+                "topic_id":        f"{now.strftime('%Y%m%d')}_{title[:12]}",
+                "title":           title,
+                "category":        cat,
+                "sources":         ["X"],
+                "engagement":      engagement,
+                "published_at":    pub_str,
+                "key_facts":       [item.get("summary", "")[:100]],
+                "related_tickers": [],
+            }
+        )
+
+    # RSS アイテムを topic 形式に変換
+    for art in rss_items:
+        title = art.get("title", "")[:60]
+        cat   = _classify_category(title + art.get("summary", ""))
+        # 同一事象のトピックがすでにあれば sources にマージ
+        merged = False
+        for t in topics:
+            # タイトルの類似度: 3文字以上の共通部分があれば同一扱い
+            common_words = set(re.findall(r"[\u4e00-\u9fff]{2,}", t["title"])) & \
+                           set(re.findall(r"[\u4e00-\u9fff]{2,}", title))
+            if len(common_words) >= 2:
+                t["sources"] = list(set(t["sources"] + [art["source"]]))
+                t["key_facts"].append(art.get("summary", "")[:100])
+                merged = True
+                break
+        if not merged:
+            topics.append(
+                {
+                    "topic_id":        f"{now.strftime('%Y%m%d')}_{title[:12]}",
+                    "title":           title,
+                    "category":        cat,
+                    "sources":         [art["source"]],
+                    "engagement":      art.get("engagement", 0),
+                    "published_at":    art.get("published_at", now.strftime("%Y-%m-%d %H:%M")),
+                    "key_facts":       [art.get("summary", "")[:100]],
+                    "related_tickers": [],
+                }
+            )
+
+    # スコアリング
+    for t in topics:
+        t["score"] = score_topic(t, now=now)
+
+    # スコア降順でソート → 上位10件
+    topics.sort(key=lambda x: x["score"], reverse=True)
+    return topics[:10]
+
+
+def fetch_all_investment_news(
+    hours_back: int = NEWS_HOURS_BACK,
+    dry_run: bool = False,
+) -> list[dict[str, Any]]:
+    """
+    X + RSS + note の全ソースから投資ニュースを取得し、集約・スコアリングして返す。
+
+    Parameters
+    ----------
+    hours_back : 過去何時間分を対象にするか（デフォルト24h）
+    dry_run    : True のときはモックデータを使用（APIキー不要）
+
+    Returns
+    -------
+    上位10件のトピックリスト
+    """
+    # X API 取得
+    x_items = fetch_investment_news(hours_back=hours_back, dry_run=dry_run)
+
+    # RSS 取得
+    rss_items = fetch_rss_news(hours_back=hours_back)
+
+    # 集約・スコアリング
+    return aggregate_and_score_topics(x_items, rss_items, hours_back=hours_back)
