@@ -90,9 +90,11 @@ tools:
 
 ```
 outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/
-  topic_info.txt       # topic_id, title, category, sources, published_at
+  topic_info.txt       # topic_id, title, category, sources, published_at, hours_ago_label
   1/
     post.txt           # 投稿文 + メタ情報
+    infographic_memo.txt  # NotebookLM用解説メモ（投稿内容と重複しない部分）
+    infographic_style.txt # 推奨スタイル情報
     chart_meta.txt     # 参照チャート・スクショURL（任意）
   2/ ～ 6/（同様）
 ```
@@ -104,8 +106,53 @@ title: 日銀が次回会合での追加利上げを示唆
 category: 要人発言
 sources: X, Reuters JP
 published_at: 2026-04-12 09:30
+hours_ago_label: 3時間前
 key_facts: 植田総裁「議論の可能性」, 銀行株+2.1%, USDJPY140円台
 review_round: 1
+```
+
+### infographic_memo.txt フォーマット
+
+**必須ルール:**
+- `post.txt` の投稿内容と**文字・数字大部分を重複させない**こと
+- インフォグラフィック展開に適した「深つぼり解説」を書く
+- 背景・構造・比較・歴史的文脈など、投稿では省略した誨しい情報を含める
+- 300～500字程度、筆第体で書く
+
+```
+# NotebookLMインフォグラフィック用解説メモ
+# セットN: {topic_title}　—― {axis_name}
+# 元ネタ: {published_at} ({hours_ago_label})
+
+## 背景・文脈
+...
+
+## 構造的なポイント
+...
+
+## 比較・数字の深説
+...
+
+## 投資家が憨くべきリスク・相関プロセス
+...
+```
+
+### infographic_style.txt フォーマット
+
+**スタイル選定基準** (BananaX infographic-evaluation より高スコアかつ投資テーマに適合なものを選択):
+- 訴求軸セットで1・4（データ・須報・テクニカル）→ **Data Viz / Graph / Information** (#248)
+- セット2（銘柄・セクター）→ **Infographic / Isometric / Data** (#47)
+- セット3（要人発言・政策）→ **Blueprint / Architecture / Blue** (#239)
+- セット5（投資戦略）→ **Neon / Black / Light** (#229) or **Minimal / Line / White** (#173)
+- セット6（匣学・哲学）→ **Swiss Style / Typography / Color** (#165)
+- アノマリートピック→ **Constructivism / Geometric / Red** (#182) or **Blueprint / Technical / Cyanotype** (#27)
+
+```
+# NotebookLMインフォグラフィック 推奨スタイル
+推奨スタイル: {style_name}
+スタイル詳細: {style_description_ja}
+選定理由: {reason}
+スタイル参照URL: https://furoku.github.io/bananaX/projects/infographic-evaluation/index.html
 ```
 
 ### chart_meta.txt（任意）

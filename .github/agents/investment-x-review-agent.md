@@ -34,8 +34,10 @@ tools:
 | # | 項目 | OK基準 |
 |---|---|---|
 | B1 | ソース確認 | topic_info.txt の sources に照らして確認できる情報である |
-| B2 | 鮮度 | topic_info.txt の published_at が48時間以内である |
+| B2 | 鮮度 | topic_info.txt の published_at が48時間以内、またはアノマリーパターンである |
 | B3 | 創作禁止 | key_facts 外の数値・発言の創作がない |
+| B4 | infographic_memo.txt | 各セットに存在し、post.txt の文章と大部分が重複していない（別角度の深掘り解説になっている） |
+| B5 | infographic_style.txt | 各セットに存在し、有効なスタイル名・選定理由・BananaX 参照URLを含む |
 
 ## 判定と出力
 
@@ -47,12 +49,12 @@ tools:
 - レビューラウンド: N回目
 - 推奨投稿案: セットN（理由: フック力が最も高く、ファクトが具体的）
 - 全セット評価:
-  - セット1（速報）: フック A / 事実 A / 示唆 B / 会話 B
-  - セット2（銘柄）: フック B / 事実 A / 示唆 A / 会話 A
-  - セット3（要人）: フック A / 事実 A / 示唆 A / 会話 B
-  - セット4（テクニカル）: フック B / 事実 B / 示唆 B / 会話 B
-  - セット5（戦略）: フック A / 事実 B / 示唆 A / 会話 A
-  - セット6（哲学）: フック B / 事実 B / 示唆 A / 会話 B
+  - セット1（速報）: フック A / 事実 A / 示唆 B / 会話 B / infographic B4:OK B5:OK
+  - セット2（銘柄）: フック B / 事実 A / 示唆 A / 会話 A / infographic B4:OK B5:OK
+  - セット3（要人）: フック A / 事実 A / 示唆 A / 会話 B / infographic B4:OK B5:OK
+  - セット4（テクニカル）: フック B / 事実 B / 示唆 B / 会話 B / infographic B4:OK B5:OK
+  - セット5（戦略）: フック A / 事実 B / 示唆 A / 会話 A / infographic B4:OK B5:OK
+  - セット6（哲学）: フック B / 事実 B / 示唆 A / 会話 B / infographic B4:OK B5:OK
 ```
 
 ### NG の場合

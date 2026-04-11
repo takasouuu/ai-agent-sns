@@ -3,7 +3,7 @@
 name: investment-x-workflow
 description: >
   株式投資・相場情報をX投稿に変換するワークフローを統括するオーケストレーターエージェント。
-  リサーチ → トピック選択 → 編集制作 → レビュー → 投稿案選択 → 履歴記録 の流れを実行する。
+  リサーチ → トピック複数選択 → 編集制作 → レビュー → 投稿案選択 の流れを実行する。
 tools:
   - codebase
   - runCommands
@@ -19,18 +19,19 @@ tools:
 ```
 STEP 1: リサーチ（自動）
   └─ investment-x-research-agent を実行
-  └─ 出力: tmp_investment/candidate_topics.md
+  └─ 出力: tmp_investment/candidate_topics.md（上位12件、うちアノマリー2〜3件含む）
 
 STEP 1-R: リサーチレビュー（自動・最大10回ループ）
   └─ investment-x-research-review-agent を実行
   ├─ NG → tmp_investment/research_review_feedback.md を生成 → STEP 1 に差し戻し
   └─ OK → 候補リストに PASSED を追記
 
-[USER DECISION 1] 候補リストを提示 → ユーザーがトピック番号を選択
+[USER DECISION 1] 候補リスト12件を提示 → ユーザーが複数番号を選択（例: 1,3,8 または 1-3）
 
-STEP 2: 編集制作（自動・最大5回ループ）
+STEP 2: 編集制作（選択トピックごとにループ・各最大5回）
   └─ investment-x-editorial-agent を実行
   └─ 出力: outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/{1-6}/
+       各セットに post.txt + infographic_memo.txt + infographic_style.txt を生成
 
 STEP 3: レビュー（自動・最大5回ループ）
   └─ investment-x-review-agent を実行
@@ -38,9 +39,6 @@ STEP 3: レビュー（自動・最大5回ループ）
   └─ OK → review_passed.md を生成
 
 [USER DECISION 2] 6セットを提示 → ユーザーがセット番号を選択
-
-STEP 4: 履歴記録（自動）
-  └─ data/investment_posted_history.json を更新
 ```
 
 ---
@@ -104,11 +102,11 @@ NOTE_FEEDS = [
 
 ### 1-5. スコアリングと出力
 `investment-x-research-agent` のスコアリングロジックを適用し、
-上位10件を `tmp_investment/candidate_topics.md` に書き出す。
+上位12件（うちアノマリー2〜3件を必ず含める）を `tmp_investment/candidate_topics.md` に書き出す。
 
 ユーザーへの確認メッセージ:
-> 投資トピック候補リストを生成しました。  
-> 投稿したいトピックの番号を教えてください（1～10）。
+> 投資トピック候補リストを生成しました（12件）。  
+> 投稿したいトピックの番号を**複数選択**できます（例: 1,3,8 または 1-3）。
 
 ---
 
@@ -122,13 +120,15 @@ NOTE_FEEDS = [
 
 ユーザーへの確認メッセージ:
 > リサーチレビューが完了しました。  
-> 投稿したいトピックの番号を教えてください（1～10）。
+> 投稿したいトピックの番号を**複数選択**できます（例: 1,3,8 または 1-3）。
 
 ---
 
 ## STEP 2: 編集制作
 
-ユーザーが選択した `topic_id` で `investment-x-editorial-agent` の処理を実行する。
+ユーザーが選択した**複数の** `topic_id` それぞれに対して `investment-x-editorial-agent` の処理を順番に実行する。
+
+> 例: ユーザーが「1,3,8」を選択した場合、トピック1 → トピック3 → トピック8 の順で各6セットを生成する。
 
 ### 2-1. トピック情報の確定
 ```python
@@ -159,8 +159,10 @@ outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/
   topic_info.txt
   1/
     post.txt
-    chart_meta.txt   # 任意
-  2/ ～ 6/
+    infographic_memo.txt    # NotebookLM用解説メモ
+    infographic_style.txt   # 推奨スタイル
+    chart_meta.txt          # 任意
+  2/ ～ 6/（同様）
 ```
 
 **post.txt フォーマット**:
@@ -220,27 +222,16 @@ outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/
 
 ---
 
-## STEP 4: 投稿案選択 → 履歴記録
+## STEP 4: 投稿案提示
 
 ユーザーへの確認メッセージ:
 > レビューが完了しました。投稿するセット番号を選んでください（1〜6）。  
 > （推奨: セットN ← review_passed.md の推奨）
 
-セット確定後、`data/investment_posted_history.json` に以下を追記する:
-```json
-{
-  "topic_id": "20260412_日銀利上げ示唆",
-  "title": "日銀が次回会合での追加利上げを示唆",
-  "posted_date": "2026-04-12",
-  "used_set": 3,
-  "output_dir": "outputs/investment/2026-04-12_日銀利上げ示唆_20260412_日銀利上げ示唆/"
-}
-```
-
 ---
 
 ## ブランド定数
-- 投稿コンセプト: 1投稿10秒で読める投資示唆。ファクトベース・客観視点。
+- 投稿コンセプト: ファクトベース・客観視点の投資示唆。
 - 訴求軸6種: 速報・市場インパクト / 銘柄・セクター分析 / 要人発言・政策動向 / テクニカル・需給分析 / 投資戦略・リスク管理 / 投資家の思考・哲学
 - 固定ハッシュタグ: `#投資 #株式投資`
 - 禁止表現: 「必ず儲かる」「絶対上がる」「買い推奨」「確実に」等の断定・投資勧誘
