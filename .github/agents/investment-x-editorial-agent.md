@@ -94,7 +94,6 @@ outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/
   1/
     post.txt           # 投稿文 + メタ情報
     infographic_memo.txt  # NotebookLM用解説メモ（投稿内容と重複しない部分）
-    infographic_style.txt # 推奨スタイル情報
     chart_meta.txt     # 参照チャート・スクショURL（任意）
   2/ ～ 6/（同様）
 ```
@@ -137,23 +136,6 @@ review_round: 1
 ...
 ```
 
-### infographic_style.txt フォーマット
-
-**スタイル選定基準** (BananaX infographic-evaluation より高スコアかつ投資テーマに適合なものを選択):
-- 訴求軸セットで1・4（データ・須報・テクニカル）→ **Data Viz / Graph / Information** (#248)
-- セット2（銘柄・セクター）→ **Infographic / Isometric / Data** (#47)
-- セット3（要人発言・政策）→ **Blueprint / Architecture / Blue** (#239)
-- セット5（投資戦略）→ **Neon / Black / Light** (#229) or **Minimal / Line / White** (#173)
-- セット6（匣学・哲学）→ **Swiss Style / Typography / Color** (#165)
-- アノマリートピック→ **Constructivism / Geometric / Red** (#182) or **Blueprint / Technical / Cyanotype** (#27)
-
-```
-# NotebookLMインフォグラフィック 推奨スタイル
-推奨スタイル: {style_name}
-スタイル詳細: {style_description_ja}
-選定理由: {reason}
-スタイル参照URL: https://furoku.github.io/bananaX/projects/infographic-evaluation/index.html
-```
 
 ### chart_meta.txt（任意）
 関連チャートがある場合は以下の形式で記載:

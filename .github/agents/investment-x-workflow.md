@@ -31,7 +31,7 @@ STEP 1-R: リサーチレビュー（自動・最大10回ループ）
 STEP 2: 編集制作（選択トピックごとにループ・各最大5回）
   └─ investment-x-editorial-agent を実行
   └─ 出力: outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/{1-6}/
-       各セットに post.txt + infographic_memo.txt + infographic_style.txt を生成
+       各セットに post.txt + infographic_memo.txt を生成
 
 STEP 3: レビュー（自動・最大5回ループ）
   └─ investment-x-review-agent を実行
@@ -160,7 +160,6 @@ outputs/investment/YYYY-MM-DD_{topic_summary}_{topic_id}/
   1/
     post.txt
     infographic_memo.txt    # NotebookLM用解説メモ
-    infographic_style.txt   # 推奨スタイル
     chart_meta.txt          # 任意
   2/ ～ 6/（同様）
 ```
