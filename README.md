@@ -98,6 +98,52 @@ data/posted_history.json を参照してください。
 
 ---
 
+## Redmine週次報告ワークフロー実行プロンプト例
+
+GitHub Copilot Chat を **Agent モード** にして、以下のプロンプトを利用してください。
+
+### 1. 週次報告ワークフローを一括実行する
+
+```
+@redmine-weekly-workflow Redmine APIを使って週次報告を作成してください。
+対象期間は 2026-04-13 から 2026-04-19 です。
+PROJECT_ID: your_project_id
+```
+
+---
+
+### 2. Redmineデータ収集のみ実行する
+
+```
+@redmine-weekly-data-agent Redmine APIから週次報告データを取得してください。
+FROM_DATE: 2026-04-13
+TO_DATE: 2026-04-19
+PROJECT_ID: your_project_id
+tmp_analysis/redmine_issues.json と tmp_analysis/redmine_time_entries.json に保存してください。
+```
+
+---
+
+### 3. 収集済みデータから週次報告を作成する
+
+```
+@redmine-weekly-analysis-agent tmp_analysis/redmine_issues.json と
+tmp_analysis/redmine_time_entries.json を使って週次報告を作成してください。
+outputs/weekly/weekly_report_2026-04-19.md に出力してください。
+```
+
+---
+
+### 4. 週次報告ドラフトをレビューする
+
+```
+@redmine-weekly-review-agent outputs/weekly/weekly_report_2026-04-19.md をレビューしてください。
+KPI欠落、根拠不足、曖昧表現を確認し、
+OKなら outputs/weekly/review_passed.md、NGなら outputs/weekly/review_feedback.md を作成してください。
+```
+
+---
+
 ## ディレクトリ構成
 
 ```
