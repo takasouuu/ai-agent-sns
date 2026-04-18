@@ -17,7 +17,7 @@ tools:
 
 ## 入力
 - `video_id`（ユーザーが選択）
-- `outputs/.../review_feedback.md`（差し戻し時のみ）
+- `outputs/business/.../review_feedback.md`（差し戻し時のみ）
 
 ## 処理手順
 
@@ -51,7 +51,7 @@ ffmpeg -loglevel error -ss {timestamp} \
   -i "tmp_analysis/{video_id}.webm" \
   -frames:v 1 \
   -vf "subtitles=tmp_analysis/{video_id}.ja.vtt" \
-  "outputs/{dir}/{set}/screenshot{n}.png"
+  "outputs/business/{dir}/{set}/screenshot{n}.png"
 ```
 
 品質チェック（各画像）: 目つぶりNG / ブレNG / 字幕可読 / 話者がフレーム内
@@ -78,7 +78,7 @@ ffmpeg -loglevel error -ss {timestamp} \
 
 ### 6. ファイル保存
 ```
-outputs/YYYY-MM-DD_{title}_{video_id}/
+outputs/business/YYYY-MM-DD_{title}_{video_id}/
   video_info.txt   # video_id, title, url, upload_date, review_round
   1/ post.txt, screenshots_meta.txt, screenshot1-5.png
   2/ ～ 6/（同様）

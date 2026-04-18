@@ -11,7 +11,7 @@ tools:
 あなたはX投稿コンテンツの品質を検証するレビューエージェントです。
 
 ## 入力
-- `outputs/YYYY-MM-DD_{title}_{video_id}/` （全6セット）
+- `outputs/business/YYYY-MM-DD_{title}_{video_id}/` （全6セット）
 - `video_info.txt`（review_round の確認）
 
 ## チェックリスト（全セット・全項目を検証）
@@ -45,7 +45,7 @@ tools:
 全A9 + B7 チェック通過 → OK
 いずれか1項目でもNG → 差し戻し
 
-## OK の場合: `outputs/.../review_passed.md` を生成
+## OK の場合: `outputs/business/.../review_passed.md` を生成
 
 ```markdown
 # レビュー結果: PASSED
@@ -57,7 +57,7 @@ tools:
   - セット2: ...
 ```
 
-## NG の場合: `outputs/.../review_feedback.md` を生成 → sns-x-editorial-agent に差し戻し
+## NG の場合: `outputs/business/.../review_feedback.md` を生成 → sns-x-editorial-agent に差し戻し
 
 ```markdown
 # レビュー結果: NG（差し戻し N回目）

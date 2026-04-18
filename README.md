@@ -6,12 +6,12 @@
 
 ## エージェント構成
 
-| エージェント | ファイル | 役割 |
-|---|---|---|
-| オーケストレーター | `sns-x-business-agent` | 全体統括・ワークフロー進行 |
-| リサーチ | `sns-x-research-agent` | 投稿候補動画の選定 |
-| 編集 | `sns-x-editorial-agent` | 投稿文・スクリーンショット生成 |
-| レビュー | `sns-x-review-agent` | 品質チェック・差し戻し判定 |
+| エージェント    | ファイル                    | 役割              |
+| --------- | ----------------------- | --------------- |
+| オーケストレーター | `sns-x-business-agent`  | 全体統括・ワークフロー進行   |
+| リサーチ      | `sns-x-research-agent`  | 投稿候補動画の選定       |
+| 編集        | `sns-x-editorial-agent` | 投稿文・スクリーンショット生成 |
+| レビュー      | `sns-x-review-agent`    | 品質チェック・差し戻し判定   |
 
 詳細: [.github/workflows/sns-x-business-workflow.md](.github/workflows/sns-x-business-workflow.md)
 
@@ -33,7 +33,7 @@ GitHub Copilot Chat を **Agent モード** にして、以下のプロンプト
 ### 2. リサーチだけ実行する（候補動画リストの更新）
 
 ```
-@sns-x-research-agent しごとリーチの最新・人気動画を調査して、
+@sns-x-researc-agent しごとリーチの最新・人気動画を調査して、
 候補リストを tmp_analysis/candidate_videos.md に出力してください。
 ```
 
@@ -138,5 +138,6 @@ output/
 - **ユーザー名**: @10sec_careerlab
 - **コンセプト**: 1投稿10秒で学べる。情熱・実務・文化を短く深く。
 - **対象**: 転職検討者・副業検討者・キャリアアップ志向層
+- lll
 
 画像コンセプト詳細: [.github/prompts/sns-x-business-icon-gemini.prompt.md](.github/prompts/sns-x-business-icon-gemini.prompt.md)

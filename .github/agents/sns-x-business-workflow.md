@@ -36,7 +36,7 @@ STEP 1-R: リサーチレビュー（自動・最大10回ループ）
 
 STEP 2: 編集制作（自動・最大5回ループ）
   └─ sns-x-editorial-agent を実行
-  └─ 出力: outputs/YYYY-MM-DD_title_videoId/{1-6}/
+  └─ 出力: outputs/business/YYYY-MM-DD_title_videoId/{1-6}/
 
 STEP 3: レビュー（自動・最大5回ループ）
   └─ sns-x-review-agent を実行
@@ -136,7 +136,7 @@ ffmpeg -loglevel error -ss {timestamp} \
   -i "tmp_analysis/{video_id}.webm" \
   -frames:v 1 \
   -vf "subtitles=tmp_analysis/{video_id}.ja.vtt" \
-  "outputs/{dir}/{set}/screenshot{n}.png"
+  "outputs/business/{dir}/{set}/screenshot{n}.png"
 ```
 
 品質チェック（各画像で確認）:
@@ -169,7 +169,7 @@ ffmpeg -loglevel error -ss {timestamp} \
 
 ### 2-6. ファイル保存構成
 ```
-outputs/YYYY-MM-DD_{title}_{video_id}/
+outputs/business/YYYY-MM-DD_{title}_{video_id}/
   video_info.txt       # video_id, title, url, upload_date, review_round
   1/
     post.txt
@@ -212,7 +212,7 @@ outputs/YYYY-MM-DD_{title}_{video_id}/
 
 ### 判定と出力
 
-**OK の場合** → `outputs/.../review_passed.md` を生成:
+**OK の場合** → `outputs/business/.../review_passed.md` を生成:
 ```markdown
 # レビュー結果: PASSED
 - 確認日時: YYYY-MM-DD HH:MM
@@ -221,7 +221,7 @@ outputs/YYYY-MM-DD_{title}_{video_id}/
 - 全セット評価: セット1: フック A / 保存 A / 共感 B ...
 ```
 
-**NG の場合** → `outputs/.../review_feedback.md` を生成 → STEP 2 に差し戻し:
+**NG の場合** → `outputs/business/.../review_feedback.md` を生成 → STEP 2 に差し戻し:
 ```markdown
 # レビュー結果: NG（差し戻し N回目）
 | セット | 項目 | 問題内容 | 修正方針 |
@@ -245,7 +245,7 @@ outputs/YYYY-MM-DD_{title}_{video_id}/
   "title": "動画タイトル",
   "posted_date": "YYYY-MM-DD",
   "used_set": 3,
-  "output_dir": "outputs/YYYY-MM-DD_title_videoId/"
+  "output_dir": "outputs/business/YYYY-MM-DD_title_videoId/"
 }
 ```
 
