@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>週次報告モック | 2026-04-20</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Sans:wght@500;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="report-header card">
+      <div>
+        <p class="meta-label">システム開発プロジェクト 週次報告</p>
+        <h1>週次報告ダッシュボード</h1>
+        <p class="headline-summary">SPIとCPIは基準値に近い水準を維持。不具合解消は進む一方、外部依存による期日超過チケットの監視強化が必要。</p>
+      </div>
+      <div class="header-meta">
+        <span class="status-badge reviewed">Reviewed</span>
+        <dl>
+          <div>
+            <dt>対象期間</dt>
+            <dd>2026-04-13 〜 2026-04-19</dd>
+          </div>
+          <div>
+            <dt>更新日時</dt>
+            <dd>2026-04-20 09:10</dd>
+          </div>
+          <div>
+            <dt>参照</dt>
+            <dd>weekly_report_2026-04-20.md</dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="kpi-grid">
+      <article class="card kpi-card">
+        <p class="kpi-title">完了件数</p>
+        <p class="kpi-value">42</p>
+        <p class="kpi-delta positive">先週比 +6</p>
+        <p class="kpi-note">Closed / Resolved 合計</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">未完了件数</p>
+        <p class="kpi-value">31</p>
+        <p class="kpi-delta warning">先週比 +2</p>
+        <p class="kpi-note">Open / In Progress</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">バグ起票件数</p>
+        <p class="kpi-value">9</p>
+        <p class="kpi-delta warning">先週比 +1</p>
+        <p class="kpi-note">重大 2 / 軽微 7</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">期限超過件数</p>
+        <p class="kpi-value danger">5</p>
+        <p class="kpi-delta danger">先週比 +1</p>
+        <p class="kpi-note">外部連携待ち 3 件含む</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">実績工数 (h)</p>
+        <p class="kpi-value">186.5</p>
+        <p class="kpi-delta positive">先週比 -8.0</p>
+        <p class="kpi-note">計画 190h に対し 98.2%</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">再オープン件数</p>
+        <p class="kpi-value">3</p>
+        <p class="kpi-delta neutral">先週比 ±0</p>
+        <p class="kpi-note">結合テスト観点で発生</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">SPI</p>
+        <p class="kpi-value">0.93</p>
+        <p class="kpi-delta warning">先週比 -0.03</p>
+        <p class="kpi-note">EV / PV (進捗効率)</p>
+      </article>
+      <article class="card kpi-card">
+        <p class="kpi-title">CPI</p>
+        <p class="kpi-value">0.97</p>
+        <p class="kpi-delta warning">先週比 -0.02</p>
+        <p class="kpi-note">EV / AC (コスト効率)</p>
+      </article>
+    </section>
+
+    <section class="card section-card">
+      <div class="section-header">
+        <h2>領域別サマリー</h2>
+        <p>6領域を同一フォーマットで比較（新規 / 完了 / 未完了）</p>
+      </div>
+      <div class="domain-grid">
+        <article class="domain-card task">
+          <h3>タスク管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>14</dd></div>
+            <div><dt>完了</dt><dd>16</dd></div>
+            <div><dt>未完了</dt><dd>18</dd></div>
+          </dl>
+        </article>
+        <article class="domain-card internal">
+          <h3>内部課題管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>6</dd></div>
+            <div><dt>完了</dt><dd>7</dd></div>
+            <div><dt>未完了</dt><dd>8</dd></div>
+          </dl>
+        </article>
+        <article class="domain-card external">
+          <h3>外部課題管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>4</dd></div>
+            <div><dt>完了</dt><dd>2</dd></div>
+            <div><dt>未完了</dt><dd>7</dd></div>
+          </dl>
+        </article>
+        <article class="domain-card risk">
+          <h3>リスク管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>2</dd></div>
+            <div><dt>完了</dt><dd>1</dd></div>
+            <div><dt>未完了</dt><dd>4</dd></div>
+          </dl>
+        </article>
+        <article class="domain-card bug">
+          <h3>不具合管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>9</dd></div>
+            <div><dt>完了</dt><dd>11</dd></div>
+            <div><dt>未完了</dt><dd>6</dd></div>
+          </dl>
+        </article>
+        <article class="domain-card change">
+          <h3>変更管理</h3>
+          <dl>
+            <div><dt>新規</dt><dd>3</dd></div>
+            <div><dt>完了</dt><dd>5</dd></div>
+            <div><dt>未完了</dt><dd>2</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="insight-grid">
+      <article class="card section-card compact">
+        <div class="section-header">
+          <h2>進捗</h2>
+          <p>SPI 0.93、計画に対し軽微な遅れ</p>
+        </div>
+        <ul class="fact-list">
+          <li>EV 372pt / PV 400pt のため SPI は 0.93。</li>
+          <li>主要マイルストーン 5 件中 4 件を期限内達成。</li>
+          <li>遅延 1 件は外部API仕様変更への追従で発生。</li>
+          <li>次工程への影響は 2 営業日以内に吸収見込み。</li>
+        </ul>
+      </article>
+
+      <article class="card section-card compact">
+        <div class="section-header">
+          <h2>品質</h2>
+          <p>解消速度は改善、再オープンは横ばい</p>
+        </div>
+        <ul class="fact-list">
+          <li>バグ起票 9 件に対し解消 11 件で純減 2 件。</li>
+          <li>再オープン 3 件は結合条件の不足が主因。</li>
+          <li>重大不具合は 2 件、どちらも暫定回避策を実施済み。</li>
+        </ul>
+      </article>
+
+      <article class="card section-card compact cost-panel">
+        <div class="section-header">
+          <h2>コスト</h2>
+          <p>CPI 0.97、実績は計画比 +3.2h</p>
+        </div>
+        <ul class="fact-list">
+          <li>EV 372pt / AC 384pt で CPI は 0.97。</li>
+          <li>実績工数 186.5h、計画 190.0h に対して稼働率 98.2%。</li>
+          <li>外部課題待ちの手戻り抑制で来週のAC増を抑える見込み。</li>
+        </ul>
+      </article>
+
+      <article class="card section-card compact risk-panel">
+        <div class="section-header">
+          <h2>リスク</h2>
+          <p>Critical / High / Medium を優先順に整理</p>
+        </div>
+        <div class="risk-table">
+          <div class="risk-row critical">
+            <p class="risk-level">Critical</p>
+            <p>外部API仕様変更の確定遅れ</p>
+            <p>結合試験開始が最大3日後ろ倒し</p>
+            <p>代替IFで先行試験、先方窓口と日次確認</p>
+          </div>
+          <div class="risk-row high">
+            <p class="risk-level">High</p>
+            <p>レビュー工数不足</p>
+            <p>再オープン増加の可能性</p>
+            <p>レビュー担当を2名追加して平準化</p>
+          </div>
+          <div class="risk-row medium">
+            <p class="risk-level">Medium</p>
+            <p>変更要求の集中</p>
+            <p>優先度判断の遅延</p>
+            <p>変更管理会議を週2回へ増枠</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card section-card compact action-panel">
+        <div class="section-header">
+          <h2>次週アクション</h2>
+          <p>優先順で最大3件</p>
+        </div>
+        <ol class="action-list">
+          <li>
+            <p class="action-title">外部API仕様の確定条件を文書化し、先方合意を取得</p>
+            <p class="action-meta">担当: 田中 / 期限: 04-22 / 成功条件: I/F確定版をレビュー会で承認</p>
+          </li>
+          <li>
+            <p class="action-title">結合テスト観点の不足項目を追補し再オープン率を抑制</p>
+            <p class="action-meta">担当: 佐藤 / 期限: 04-24 / 成功条件: 再オープン件数を週2件以下</p>
+          </li>
+          <li>
+            <p class="action-title">期限超過チケット5件のリカバリ計画を更新し共有</p>
+            <p class="action-meta">担当: 鈴木 / 期限: 04-25 / 成功条件: 全件の新期限と依存関係を確定</p>
+          </li>
+        </ol>
+      </article>
+    </section>
+
+    <section class="detail-grid">
+      <article class="card section-card overdue-panel">
+        <div class="section-header">
+          <h2>期日超過チケット</h2>
+          <p>超過件数 5 件（クリックで展開）</p>
+        </div>
+        <details class="overdue-details" open>
+          <summary>期日超過チケットを表示する</summary>
+          <table class="ticket-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>件名</th>
+                <th>区分</th>
+                <th>状態</th>
+                <th>担当</th>
+                <th>期日</th>
+                <th>超過日数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#4218</td>
+                <td>外部API v2.1対応</td>
+                <td>外部課題</td>
+                <td>進行中</td>
+                <td>田中</td>
+                <td>04-16</td>
+                <td>4日</td>
+              </tr>
+              <tr>
+                <td>#4224</td>
+                <td>バッチ異常時リトライ設計</td>
+                <td>タスク</td>
+                <td>レビュー待ち</td>
+                <td>佐藤</td>
+                <td>04-17</td>
+                <td>3日</td>
+              </tr>
+              <tr>
+                <td>#4231</td>
+                <td>監視閾値の再調整</td>
+                <td>リスク</td>
+                <td>進行中</td>
+                <td>鈴木</td>
+                <td>04-18</td>
+                <td>2日</td>
+              </tr>
+              <tr>
+                <td>#4235</td>
+                <td>認証失敗時のエラー表示改修</td>
+                <td>不具合</td>
+                <td>修正中</td>
+                <td>高橋</td>
+                <td>04-18</td>
+                <td>2日</td>
+              </tr>
+              <tr>
+                <td>#4240</td>
+                <td>帳票レイアウト変更反映</td>
+                <td>変更管理</td>
+                <td>未着手</td>
+                <td>伊藤</td>
+                <td>04-19</td>
+                <td>1日</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+      </article>
+
+      <article class="card section-card qualitative-panel">
+        <div class="section-header">
+          <h2>定性評価（PL観点）</h2>
+          <p>事実に基づく楽観/悲観シナリオ評価</p>
+        </div>
+
+        <div class="qual-block optimistic">
+          <h3>楽観的評価</h3>
+          <p>品質指標は改善傾向で、CPIも1.0近傍を維持。外部API仕様が今週中に確定すれば、遅延1件は吸収可能で、来週にはSPIを0.97付近まで回復できる見込み。</p>
+        </div>
+
+        <div class="qual-block pessimistic">
+          <h3>悲観的評価</h3>
+          <p>外部依存が継続すると、結合試験の後続チケットに連鎖遅延が発生し、SPIが0.90を下回る可能性。再オープン増加が重なると、CPI悪化と期限超過の増加が同時に進む懸念がある。</p>
+        </div>
+
+        <ul class="decision-list">
+          <li><span class="decision-label">メンバー全員への残業依頼要否</span><span class="decision-value caution">原則不要（限定的に必要）</span></li>
+          <li><span class="decision-label">残業依頼の実施条件</span><span class="decision-value">期日超過5件のうちCritical関連2件に限定して最大週4h</span></li>
+          <li><span class="decision-label">要員追加要否</span><span class="decision-value caution">今週は見送り、来週判定</span></li>
+          <li><span class="decision-label">要員追加の判断トリガー</span><span class="decision-value">SPI &lt; 0.90が2週継続、または期限超過が8件超</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card section-card member-panel">
+      <div class="section-header">
+        <h2>メンバー別 進捗・工数・来週チケット</h2>
+        <p>個人別の今週SPI / 予定工数 / 実績工数 / 来週予定工数 / 来週チケット</p>
+      </div>
+      <div class="member-table-wrap">
+        <table class="member-table">
+          <thead>
+            <tr>
+              <th>メンバー</th>
+              <th>今週SPI</th>
+              <th>今週予定工数(h)</th>
+              <th>今週実績工数(h)</th>
+              <th>来週予定工数(h)</th>
+              <th>来週チケット</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>田中</td>
+              <td><span class="spi-chip warn">0.90</span></td>
+              <td>40.0</td>
+              <td>42.5</td>
+              <td>41.0</td>
+              <td>
+                #4218 外部API v2.1対応<br />
+                #4251 先方IF差分吸収
+              </td>
+            </tr>
+            <tr>
+              <td>佐藤</td>
+              <td><span class="spi-chip good">1.03</span></td>
+              <td>36.0</td>
+              <td>35.0</td>
+              <td>37.0</td>
+              <td>
+                #4224 バッチ異常時リトライ設計<br />
+                #4256 結合試験ケース拡張
+              </td>
+            </tr>
+            <tr>
+              <td>鈴木</td>
+              <td><span class="spi-chip good">0.98</span></td>
+              <td>38.0</td>
+              <td>39.0</td>
+              <td>38.0</td>
+              <td>
+                #4231 監視閾値の再調整<br />
+                #4262 監視アラート分類見直し
+              </td>
+            </tr>
+            <tr>
+              <td>高橋</td>
+              <td><span class="spi-chip warn">0.92</span></td>
+              <td>34.0</td>
+              <td>36.0</td>
+              <td>35.0</td>
+              <td>
+                #4235 認証失敗時のエラー表示改修<br />
+                #4267 再オープン不具合の恒久対応
+              </td>
+            </tr>
+            <tr>
+              <td>伊藤</td>
+              <td><span class="spi-chip danger">0.86</span></td>
+              <td>32.0</td>
+              <td>34.0</td>
+              <td>36.0</td>
+              <td>
+                #4240 帳票レイアウト変更反映<br />
+                #4271 帳票検証観点追加
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
