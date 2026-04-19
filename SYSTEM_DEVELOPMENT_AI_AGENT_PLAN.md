@@ -172,38 +172,38 @@
 |---|---|
 | 工程ディレクトリ | phase01_basic_design, phase02_detail_design, phase03_development, phase04_unit_test_design, phase05_integration_test_design |
 | サブシステム区分コード | 01=共通（基本設計・結合テスト設計のみ）、02=WebAPI、03=得意先管理サイト、04=バッチ |
-| 成果物本体 | {subsystem_code}_{document_name}.md など（版数はGitで管理） |
-| 個別レビュー記録 | {subsystem_code}_{document_name}_agent_review.md |
-| 全体レビュー記録 | {phase_name}_overall_review.md（工程単位で1件） |
-| セルフレビュー記録 | {subsystem_code}_{document_name}_self_review.md |
-| 成果物レビュー記録 | {subsystem_code}_{document_name}_deliverable_review.md（ドキュメント/機能単位） |
+| 成果物本体 | {サブシステム区分コード}_{成果物名}.md など（版数はGitで管理） |
+| 個別レビュー記録 | {サブシステム区分コード}_{成果物名}_個別レビュー.md |
+| 全体レビュー記録 | {工程名}_全体レビュー.md（工程単位で1件） |
+| セルフレビュー記録 | {サブシステム区分コード}_{成果物名}_セルフレビュー.md |
+| 成果物レビュー記録 | {サブシステム区分コード}_{成果物名}_成果物レビュー.md（ドキュメント/機能単位） |
 
 ### 11.2 工程別の標準出力物
 
 #### 基本設計（機能別 + 共通）
 
-| 区分 | 具体ファイル名 | 内容 |
-|---|---|---|
-| 成果物本体（01:共通） | 01_common_basic_design.md | システム方針・共通仕様など工程横断の共通設計書 |
-| 成果物本体（02:WebAPI） | 02_webapi_basic_design.md | WebAPI機能の基本設計書 |
-| 成果物本体（03:得意先管理サイト） | 03_customer_site_basic_design.md | 得意先管理サイトの基本設計書 |
-| 成果物本体（04:バッチ） | 04_batch_basic_design.md | バッチ処理の基本設計書 |
-| 個別レビュー記録（各成果物） | 01_common_basic_design_agent_review.md 〜 04_batch_basic_design_agent_review.md（計4件） | 各設計書ガイドラインに基づくAgentレビュー結果 |
-| 全体レビュー記録 | phase01_basic_design_overall_review.md | 表紙、目次、変更履歴、コピーライト、文書間整合の確認結果 |
-| セルフレビュー記録（各成果物） | 01_common_basic_design_self_review.md 〜 04_batch_basic_design_self_review.md（計4件） | 作業者が実施したセルフレビュー結果 |
-| 成果物レビュー記録（各成果物） | 01_common_basic_design_deliverable_review.md 〜 04_batch_basic_design_deliverable_review.md（計4件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
+| 区分                 | 具体ファイル名                                             | 内容                           |
+| ------------------ | --------------------------------------------------- | ---------------------------- |
+| 成果物本体（01:共通）       | 01_共通_基本設計.md                                       | システム方針・共通仕様など工程横断の共通設計書      |
+| 成果物本体（02:WebAPI）   | 02_WebAPI_基本設計.md                                   | WebAPI機能の基本設計書               |
+| 成果物本体（03:得意先管理サイト） | 03_得意先管理サイト_基本設計.md                                 | 得意先管理サイトの基本設計書               |
+| 成果物本体（04:バッチ）      | 04_バッチ_基本設計.md                                      | バッチ処理の基本設計書                  |
+| 個別レビュー記録（各成果物）     | 01_共通_基本設計_個別レビュー.md 〜 04_バッチ_基本設計_個別レビュー.md（計4件）   | 各設計書ガイドラインに基づくAgentレビュー結果    |
+| 全体レビュー記録           | phase01_基本設計_全体レビュー.md                              | 表紙、目次、変更履歴、コピーライト、文書間整合の確認結果 |
+| セルフレビュー記録（各成果物）    | 01_共通_基本設計_セルフレビュー.md 〜 04_バッチ_基本設計_セルフレビュー.md（計4件） | 作業者が実施したセルフレビュー結果            |
+| 成果物レビュー記録（各成果物）    | 01_共通_基本設計_成果物レビュー.md 〜 04_バッチ_基本設計_成果物レビュー.md（計4件） | レビュアーによるドキュメント単位の成果物レビュー結果   |
 
 #### 詳細設計（機能別のみ）
 
 | 区分 | 具体ファイル名 | 内容 |
 |---|---|---|
-| 成果物本体（02:WebAPI） | 02_webapi_detail_design.md | WebAPI詳細設計書 |
-| 成果物本体（03:得意先管理サイト） | 03_customer_site_detail_design.md | 得意先管理サイト詳細設計書 |
-| 成果物本体（04:バッチ） | 04_batch_detail_design.md | バッチ詳細設計書 |
-| 個別レビュー記録（各成果物） | 02_webapi_detail_design_agent_review.md 〜 04_batch_detail_design_agent_review.md（計3件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
-| 全体レビュー記録 | phase02_detail_design_overall_review.md | 共通項目と文書間整合の確認結果 |
-| セルフレビュー記録（各成果物） | 02_webapi_detail_design_self_review.md 〜 04_batch_detail_design_self_review.md（計3件） | 作業者が実施したセルフレビュー結果 |
-| 成果物レビュー記録（各成果物） | 02_webapi_detail_design_deliverable_review.md 〜 04_batch_detail_design_deliverable_review.md（計3件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
+| 成果物本体（02:WebAPI） | 02_WebAPI_詳細設計.md | WebAPI詳細設計書 |
+| 成果物本体（03:得意先管理サイト） | 03_得意先管理サイト_詳細設計.md | 得意先管理サイト詳細設計書 |
+| 成果物本体（04:バッチ） | 04_バッチ_詳細設計.md | バッチ詳細設計書 |
+| 個別レビュー記録（各成果物） | 02_WebAPI_詳細設計_個別レビュー.md 〜 04_バッチ_詳細設計_個別レビュー.md（計3件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
+| 全体レビュー記録 | phase02_詳細設計_全体レビュー.md | 共通項目と文書間整合の確認結果 |
+| セルフレビュー記録（各成果物） | 02_WebAPI_詳細設計_セルフレビュー.md 〜 04_バッチ_詳細設計_セルフレビュー.md（計3件） | 作業者が実施したセルフレビュー結果 |
+| 成果物レビュー記録（各成果物） | 02_WebAPI_詳細設計_成果物レビュー.md 〜 04_バッチ_詳細設計_成果物レビュー.md（計3件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
 
 #### 開発（機能別）
 
@@ -212,45 +212,45 @@
 | 成果物本体（02:WebAPI） | src/api/ 配下のソースコード | WebAPI実装ソースコード |
 | 成果物本体（03:得意先管理サイト） | src/System/ 配下のソースコード | 得意先管理サイト実装ソースコード |
 | 成果物本体（04:バッチ） | src/console/ 配下のソースコード | バッチ実装ソースコード |
-| ユニットテスト結果 | unit_test_result.md | ユニットテスト実行結果、失敗件数、修正履歴 |
-| 個別レビュー記録（各成果物） | 02_webapi_implementation_agent_review.md 〜 04_batch_implementation_agent_review.md（計3件） | コーディングルールに基づくAgentレビュー結果（実装経緯を含む） |
-| セルフレビュー記録 | phase03_development_self_review.md | 作業者が実施したセルフレビュー結果 |
-| 成果物レビュー記録（各成果物） | 02_webapi_implementation_deliverable_review.md 〜 04_batch_implementation_deliverable_review.md（機能単位、計3件以上） | レビュアーによる機能単位の成果物レビュー結果 |
+| ユニットテスト結果 | 単体テスト結果.md | ユニットテスト実行結果、失敗件数、修正履歴 |
+| 個別レビュー記録（各成果物） | 02_WebAPI_実装_個別レビュー.md 〜 04_バッチ_実装_個別レビュー.md（計3件） | コーディングルールに基づくAgentレビュー結果（実装経緯を含む） |
+| セルフレビュー記録 | phase03_開発_セルフレビュー.md | 作業者が実施したセルフレビュー結果 |
+| 成果物レビュー記録（各成果物） | 02_WebAPI_実装_成果物レビュー.md 〜 04_バッチ_実装_成果物レビュー.md（機能単位、計3件以上） | レビュアーによる機能単位の成果物レビュー結果 |
 
 #### 単体テスト設計（機能別）
 
 | 区分 | 具体ファイル名 | 内容 |
 |---|---|---|
-| 成果物本体（02:WebAPI） | 02_webapi_unit_test_design.md | WebAPI単体テスト設計書 |
-| 成果物本体（03:得意先管理サイト） | 03_customer_site_unit_test_design.md | 得意先管理サイト単体テスト設計書 |
-| 成果物本体（04:バッチ） | 04_batch_unit_test_design.md | バッチ単体テスト設計書 |
-| 個別レビュー記録（各成果物） | 02_webapi_unit_test_design_agent_review.md 〜 04_batch_unit_test_design_agent_review.md（計3件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
-| 全体レビュー記録 | phase04_unit_test_design_overall_review.md | 共通項目と文書間整合の確認結果 |
-| セルフレビュー記録（各成果物） | 02_webapi_unit_test_design_self_review.md 〜 04_batch_unit_test_design_self_review.md（計3件） | 作業者が実施したセルフレビュー結果 |
-| 成果物レビュー記録（各成果物） | 02_webapi_unit_test_design_deliverable_review.md 〜 04_batch_unit_test_design_deliverable_review.md（計3件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
+| 成果物本体（02:WebAPI） | 02_WebAPI_単体テスト設計.md | WebAPI単体テスト設計書 |
+| 成果物本体（03:得意先管理サイト） | 03_得意先管理サイト_単体テスト設計.md | 得意先管理サイト単体テスト設計書 |
+| 成果物本体（04:バッチ） | 04_バッチ_単体テスト設計.md | バッチ単体テスト設計書 |
+| 個別レビュー記録（各成果物） | 02_WebAPI_単体テスト設計_個別レビュー.md 〜 04_バッチ_単体テスト設計_個別レビュー.md（計3件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
+| 全体レビュー記録 | phase04_単体テスト設計_全体レビュー.md | 共通項目と文書間整合の確認結果 |
+| セルフレビュー記録（各成果物） | 02_WebAPI_単体テスト設計_セルフレビュー.md 〜 04_バッチ_単体テスト設計_セルフレビュー.md（計3件） | 作業者が実施したセルフレビュー結果 |
+| 成果物レビュー記録（各成果物） | 02_WebAPI_単体テスト設計_成果物レビュー.md 〜 04_バッチ_単体テスト設計_成果物レビュー.md（計3件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
 
 #### 結合テスト設計（機能別 + 共通）
 
 | 区分 | 具体ファイル名 | 内容 |
 |---|---|---|
-| 成果物本体（01:共通） | 01_common_integration_test_design.md | システム全体・共通の結合テスト設計書 |
-| 成果物本体（02:WebAPI） | 02_webapi_integration_test_design.md | WebAPI結合テスト設計書 |
-| 成果物本体（03:得意先管理サイト） | 03_customer_site_integration_test_design.md | 得意先管理サイト結合テスト設計書 |
-| 成果物本体（04:バッチ） | 04_batch_integration_test_design.md | バッチ結合テスト設計書 |
-| 個別レビュー記録（各成果物） | 01_common_integration_test_design_agent_review.md 〜 04_batch_integration_test_design_agent_review.md（計4件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
-| 全体レビュー記録 | phase05_integration_test_design_overall_review.md | 共通項目と文書間整合の確認結果 |
-| セルフレビュー記録（各成果物） | 01_common_integration_test_design_self_review.md 〜 04_batch_integration_test_design_self_review.md（計4件） | 作業者が実施したセルフレビュー結果 |
-| 成果物レビュー記録（各成果物） | 01_common_integration_test_design_deliverable_review.md 〜 04_batch_integration_test_design_deliverable_review.md（計4件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
+| 成果物本体（01:共通） | 01_共通_結合テスト設計.md | システム全体・共通の結合テスト設計書 |
+| 成果物本体（02:WebAPI） | 02_WebAPI_結合テスト設計.md | WebAPI結合テスト設計書 |
+| 成果物本体（03:得意先管理サイト） | 03_得意先管理サイト_結合テスト設計.md | 得意先管理サイト結合テスト設計書 |
+| 成果物本体（04:バッチ） | 04_バッチ_結合テスト設計.md | バッチ結合テスト設計書 |
+| 個別レビュー記録（各成果物） | 01_共通_結合テスト設計_個別レビュー.md 〜 04_バッチ_結合テスト設計_個別レビュー.md（計4件） | 設計ガイドラインに基づくAgentレビュー結果（作成経緯を含む） |
+| 全体レビュー記録 | phase05_結合テスト設計_全体レビュー.md | 共通項目と文書間整合の確認結果 |
+| セルフレビュー記録（各成果物） | 01_共通_結合テスト設計_セルフレビュー.md 〜 04_バッチ_結合テスト設計_セルフレビュー.md（計4件） | 作業者が実施したセルフレビュー結果 |
+| 成果物レビュー記録（各成果物） | 01_共通_結合テスト設計_成果物レビュー.md 〜 04_バッチ_結合テスト設計_成果物レビュー.md（計4件） | レビュアーによるドキュメント単位の成果物レビュー結果 |
 
 ### 11.3 工程ごとに揃っているべきファイル一式
 
-| 工程 | 成果物本体 | 個別レビュー記録 | 全体レビュー記録 | セルフレビュー記録 | 成果物レビュー記録 |
-|---|---|---|---|---|---|
-| 基本設計 | 01〜04_*_basic_design.md（計4件） | 01〜04_*_basic_design_agent_review.md（計4件） | phase01_basic_design_overall_review.md | 01〜04_*_basic_design_self_review.md（計4件） | 01〜04_*_basic_design_deliverable_review.md（計4件） |
-| 詳細設計 | 02〜04_*_detail_design.md（計3件） | 02〜04_*_detail_design_agent_review.md（計3件） | phase02_detail_design_overall_review.md | 02〜04_*_detail_design_self_review.md（計3件） | 02〜04_*_detail_design_deliverable_review.md（計3件） |
-| 開発 | src/api, src/System, src/console 配下のソースコード | 02〜04_*_implementation_agent_review.md（計3件） | 該当なし | phase03_development_self_review.md | 02〜04_*_implementation_deliverable_review.md（機能単位、計3件以上） |
-| 単体テスト設計 | 02〜04_*_unit_test_design.md（計3件） | 02〜04_*_unit_test_design_agent_review.md（計3件） | phase04_unit_test_design_overall_review.md | 02〜04_*_unit_test_design_self_review.md（計3件） | 02〜04_*_unit_test_design_deliverable_review.md（計3件） |
-| 結合テスト設計 | 01〜04_*_integration_test_design.md（計4件） | 01〜04_*_integration_test_design_agent_review.md（計4件） | phase05_integration_test_design_overall_review.md | 01〜04_*_integration_test_design_self_review.md（計4件） | 01〜04_*_integration_test_design_deliverable_review.md（計4件） |
+| 工程      | 成果物本体                                      | 個別レビュー記録                                             | 全体レビュー記録                                          | セルフレビュー記録                                       | 成果物レビュー記録                                       |
+| ------- | ------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
+| 基本設計    | 01〜04_*_基本設計.md（計4件）                        | 01〜04_*_基本設計_個別レビュー.md（計4件）                           | phase01_基本設計_全体レビュー.md                             | 01〜04_*_基本設計_セルフレビュー.md（計4件）                       | 01〜04_*_基本設計_成果物レビュー.md（計4件）                       |
+| 詳細設計    | 02〜04_*_詳細設計.md（計3件）                        | 02〜04_*_詳細設計_個別レビュー.md（計3件）                           | phase02_詳細設計_全体レビュー.md                             | 02〜04_*_詳細設計_セルフレビュー.md（計3件）                       | 02〜04_*_詳細設計_成果物レビュー.md（計3件）                       |
+| 開発      | src/api, src/System, src/console 配下のソースコード | 02〜04_*_実装_個別レビュー.md（計3件）                           | 該当なし                                                     | phase03_開発_セルフレビュー.md                                | 02〜04_*_実装_成果物レビュー.md（機能単位、計3件以上）                 |
+| 単体テスト設計 | 02〜04_*_単体テスト設計.md（計3件）                    | 02〜04_*_単体テスト設計_個別レビュー.md（計3件）                       | phase04_単体テスト設計_全体レビュー.md                         | 02〜04_*_単体テスト設計_セルフレビュー.md（計3件）                   | 02〜04_*_単体テスト設計_成果物レビュー.md（計3件）                   |
+| 結合テスト設計 | 01〜04_*_結合テスト設計.md（計4件）                    | 01〜04_*_結合テスト設計_個別レビュー.md（計4件）                       | phase05_結合テスト設計_全体レビュー.md                         | 01〜04_*_結合テスト設計_セルフレビュー.md（計4件）                   | 01〜04_*_結合テスト設計_成果物レビュー.md（計4件）                   |
 
 ### 11.4 開発PLが標準出力物で確認すべきこと
 
