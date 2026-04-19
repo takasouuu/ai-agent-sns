@@ -97,20 +97,21 @@ STEP 5: 固定化チェックリストレビュー
 - HTML化対象は `outputs/weekly/weekly_report_YYYY-MM-DD.md` とする。
 - UI実装時は以下を満たすこと:
   - KPI Summary Row
-  - Domain Summary Grid
-  - Progress / Quality / Cost / Risk Panel
+  - Domain Summary Grid（テスト関連を除く管理領域）
+  - Test Group（折りたたみ/展開可能）
+  - Progress / Cost / Risk Panel
   - Milestone / Release Panel
   - Scope Change Panel
-  - Test Quality Panel
-  - Blocker / External Dependency Panel
-  - Technical Debt Panel
   - Team Capacity Panel
   - Weekly Trend Panel
   - Next Actions Panel
   - Overdue Ticket Expandable Table
   - Qualitative Assessment Panel
-  - Decision / Escalation Panel
   - Member SPI/Workload/Tickets Table
+- 以下は表示しないこと:
+  - Blocker / External Dependency Panel
+  - Technical Debt Panel
+  - Decision / Escalation Panel
 - 出力ファイル:
   - outputs/weekly/weekly_report_YYYY-MM-DD.html
   - outputs/weekly/weekly_report_YYYY-MM-DD.css
@@ -134,21 +135,21 @@ python3 scripts/validate_weekly_output.py --date TO_DATE --root .
 チェック項目（全件必須）:
 1. 固定テンプレート準拠（`outputs/weekly/mock/index.html` / `style.css` ベース）
 2. KPIに以下が存在: 完了/新規/未完了/バグ/期限超過/工数/SPI/CPI
-3. 領域別サマリー6領域が存在（新規/完了/未完了）
-4. 進捗にSPI根拠（EV/PV）がある
-5. コストにCPI根拠（EV/AC）と工数差分がある
-6. 期日超過件数と展開可能なチケット一覧がある
-7. リスク（Critical/High/Medium）と対応策がある
-8. 次週アクションが最大3件で担当/期限/成功条件がある
-9. 定性評価（楽観/悲観、残業要否、要員追加要否）がある
-10. 個人別テーブルに今週SPI/今週予定工数/今週実績工数/来週予定工数/来週チケットがある
-11. マイルストーン進捗（残日数/残タスク/オンタイム判定）とリリース状況がある
-12. 変更要求（CR）の発生/承認/保留と影響がある
-13. テスト品質指標（カバレッジ/合格率/検出率または修正率）がある
-14. ブロッカー/外部依存の件数・待機日数・影響がある
-15. 技術的負債（新規/解消/未解消/返済工数比率）がある
-16. チーム稼働率（今週実稼働率/来週予定稼働率）がある
-17. 週次トレンド（SPI/CPI/バグ/期限超過の前週比）がある
+3. 領域別サマリー5領域が存在（新規/完了/未完了）
+4. テストグループが折りたたみ/展開可能で、不具合管理/品質/テスト品質を内包する
+5. 進捗にSPI根拠（EV/PV）がある
+6. コストにCPI根拠（EV/AC）と工数差分がある
+7. 期日超過件数と展開可能なチケット一覧がある
+8. リスク（Critical/High/Medium）と対応策がある
+9. 次週アクションが最大3件で担当/期限/成功条件がある
+10. 定性評価（楽観/悲観、残業要否、要員追加要否）がある
+11. 個人別テーブルに今週SPI/今週予定工数/今週実績工数/来週予定工数/来週チケットがある
+12. マイルストーン進捗（残日数/残タスク/オンタイム判定）とリリース状況がある
+13. 変更要求（CR）の発生/承認/保留と影響がある
+14. テスト品質指標（カバレッジ/合格率/検出率または修正率）がある
+15. チーム稼働率（今週実稼働率/来週予定稼働率）がある
+16. 週次トレンド（SPI/CPI/バグ/期限超過の前週比）がある
+17. ブロッカー/外部依存、技術的負債、意思決定・エスカレーションを表示していない
 
 判定ルール:
 - 全項目OK: `review_checklist_YYYY-MM-DD.md` に `PASS` を記載
@@ -176,5 +177,4 @@ python3 scripts/validate_weekly_output.py --date TO_DATE --root .
 - 領域別サマリー
 - KPI要約（完了/新規/未完了/バグ/工数/SPI/CPI/期限超過）
 - マイルストーン/リリース状況
-- エスカレーション要求
 - 次週アクション3件
