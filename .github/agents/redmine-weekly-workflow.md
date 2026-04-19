@@ -85,9 +85,17 @@ STEP 5: 固定化チェックリストレビュー
   - KPI Summary Row
   - Domain Summary Grid
   - Progress / Quality / Cost / Risk Panel
+  - Milestone / Release Panel
+  - Scope Change Panel
+  - Test Quality Panel
+  - Blocker / External Dependency Panel
+  - Technical Debt Panel
+  - Team Capacity Panel
+  - Weekly Trend Panel
   - Next Actions Panel
   - Overdue Ticket Expandable Table
   - Qualitative Assessment Panel
+  - Decision / Escalation Panel
   - Member SPI/Workload/Tickets Table
 - 出力ファイル:
   - outputs/weekly/weekly_report_YYYY-MM-DD.html
@@ -120,6 +128,14 @@ python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
 8. 次週アクションが最大3件で担当/期限/成功条件がある
 9. 定性評価（楽観/悲観、残業要否、要員追加要否）がある
 10. 個人別テーブルに今週SPI/今週予定工数/今週実績工数/来週予定工数/来週チケットがある
+11. マイルストーン進捗（残日数/残タスク/オンタイム判定）とリリース状況がある
+12. 変更要求（CR）の発生/承認/保留と影響がある
+13. テスト品質指標（カバレッジ/合格率/検出率または修正率）がある
+14. ブロッカー/外部依存の件数・待機日数・影響がある
+15. 技術的負債（新規/解消/未解消/返済工数比率）がある
+16. チーム稼働率（今週実稼働率/来週予定稼働率）がある
+17. 週次トレンド（SPI/CPI/バグ/期限超過の前週比）がある
+18. 意思決定・エスカレーション要求（論点/要求先/期限）がある
 
 判定ルール:
 - 全項目OK: `review_checklist_YYYY-MM-DD.md` に `PASS` を記載
@@ -143,4 +159,6 @@ python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
 - 固定化チェックリストファイルのパス
 - 領域別サマリー
 - KPI要約（完了/新規/未完了/バグ/工数/SPI/CPI/期限超過）
+- マイルストーン/リリース状況
+- エスカレーション要求
 - 次週アクション3件
