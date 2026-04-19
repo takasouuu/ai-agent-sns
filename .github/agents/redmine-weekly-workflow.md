@@ -1,7 +1,7 @@
 ---
 name: redmine-weekly-workflow
 description: >
-  Redmine APIを使ったシステム開発プロジェクト週次報告の作成ワークフローを統括する
+  複数のRedmine URLを使ったシステム開発プロジェクト週次報告の作成ワークフローを統括する
   オーケストレーターエージェント。収集→分析→レビューを順次実行する。
 tools:
   - codebase
@@ -17,7 +17,7 @@ tools:
 ```text
 STEP 1: データ収集
   - redmine-weekly-data-agent を実行
-  - 出力: tmp_analysis/redmine_issues.json, tmp_analysis/redmine_time_entries.json
+  - 出力: 領域別 issues.json, time_entries.json
 
 STEP 2: 週次報告作成
   - redmine-weekly-analysis-agent を実行
@@ -30,17 +30,21 @@ STEP 3: 品質レビュー（最大3回ループ）
 ```
 
 ## 実行前チェック
-- REDMINE_BASE_URL が設定されている
+- REDMINE_TASK_URL が設定されている
+- REDMINE_INTERNAL_ISSUE_URL が設定されている
+- REDMINE_EXTERNAL_ISSUE_URL が設定されている
+- REDMINE_RISK_URL が設定されている
+- REDMINE_BUG_URL が設定されている
+- REDMINE_CHANGE_URL が設定されている
 - REDMINE_API_KEY が設定されている
-- PROJECT_ID が設定されている
 - FROM_DATE, TO_DATE が設定されている
 
 ## STEP 1: データ収集
 `redmine-weekly-data-agent` を実行する。
 
 完了条件:
-- tmp_analysis/redmine_issues.json が存在
-- tmp_analysis/redmine_time_entries.json が存在
+- 領域別issueファイルが存在
+- 必要な工数ファイルが存在
 
 ## STEP 2: 報告作成
 `redmine-weekly-analysis-agent` を実行する。
@@ -57,5 +61,6 @@ STEP 3: 品質レビュー（最大3回ループ）
 
 ## ユーザーへの最終報告
 - 週次報告ファイルのパス
+- 領域別サマリー
 - KPI要約（完了/新規/未完了/バグ/工数）
 - 次週アクション3件

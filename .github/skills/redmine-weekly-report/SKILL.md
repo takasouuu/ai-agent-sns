@@ -10,8 +10,17 @@ Redmine APIを根拠に、システム開発プロジェクトの週次報告を
 
 ## Canonical Data Source
 - Redmine REST API
+- 複数のRedmine URL
 - issues.json（チケット）
 - time_entries.json（工数）
+
+## Managed Areas
+1. タスク管理
+2. 内部課題管理
+3. 外部課題管理
+4. リスク管理
+5. 不具合管理
+6. 変更管理
 
 ## Required KPI
 1. 完了件数（Closed/Resolved）
@@ -30,8 +39,9 @@ Redmine APIを根拠に、システム開発プロジェクトの週次報告を
 
 ## Report Structure
 1. サマリー
-2. 進捗サマリー
-3. 品質サマリー
-4. リスクと課題
-5. 次週アクション
-6. 補足データ
+2. 領域別サマリー
+3. 進捗サマリー
+4. 品質サマリー
+5. リスクと課題
+6. 次週アクション
+7. 補足データ
