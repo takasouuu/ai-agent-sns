@@ -50,15 +50,12 @@ STEP 3: 品質レビュー（最大3回ループ）
   - OKで完了
 
 STEP 4: 静的HTML生成
-  - design.md を最優先のデザインルールとして参照
-  - 固定テンプレートへデータを差し込む（新規デザイン生成は禁止）
-  - 出力:
-    - outputs/weekly/weekly_report_YYYY-MM-DD.md
-    - outputs/weekly/dev_progress_meeting_YYYY-MM-DD_YYYY-MM-DD.md
+  - DESIGN.md を最優先のデザインルールとして参照
+  - fixed templateへデータ差し込み（新規デザイン生成は禁止）
+  - 単一HTMLでタブ切り替え（週次報告 / 開発メンバー向け進捗会議）
 
 STEP 5: 固定化チェックリストレビュー
   - validate_weekly_output.py を実行して自動チェック
-  - 出力: outputs/weekly/review_checklist_YYYY-MM-DD.md
 ```
 
 ## 実行前チェック
@@ -88,84 +85,66 @@ STEP 5: 固定化チェックリストレビュー
 - ループ上限: 3回
 - レビュー対象は「上長向け週次報告」と「開発メンバー向け進捗会議メモ」の両方とする。
 
-## STEP 4: 静的HTML生成
-- `design.md` を最優先のデザインルールとして必ず参照する。
-- `outputs/weekly/mock/index.html` と `outputs/weekly/mock/style.css` を固定テンプレートとして扱う。
-- HTML/CSSはテンプレート複製を起点にし、データ値のみ差し替える。
-- DOM構造・主要クラス名・セクション順序を変更しない。
-- `outputs/weekly/weekly_report_YYYY-MM-DD.md` の内容を、テンプレートの各項目へマッピングして反映する。
-- HTML化対象は `outputs/weekly/weekly_report_YYYY-MM-DD.md` とする。
-- UI実装時は以下を満たすこと:
-  - KPI Summary Row
-  - Domain Summary Grid（テスト関連を除く管理領域）
-  - Test Group（折りたたみ/展開可能）
-  - Progress / Cost / Risk Panel
-  - Milestone / Release Panel
-  - Scope Change Panel
-  - Team Capacity Panel
-  - Weekly Trend Panel
-  - Next Actions Panel
-  - Overdue Ticket Expandable Table
-  - Qualitative Assessment Panel
-  - Member SPI/Workload/Tickets Table
-- 以下は表示しないこと:
-  - Blocker / External Dependency Panel
-  - Technical Debt Panel
-  - Decision / Escalation Panel
-- 出力ファイル:
-  - outputs/weekly/weekly_report_YYYY-MM-DD.html
-  - outputs/weekly/weekly_report_YYYY-MM-DD.css
+## STEP 4: 静的HTML生成（再現性固定）
+### 4.1 Canonical Source
+- `outputs/weekly/mock/index.html` と `outputs/weekly/mock/style.css` を唯一のUI正本とする。
+- まずテンプレートを複製する。
+  - `cp outputs/weekly/mock/index.html outputs/weekly/weekly_report_YYYY-MM-DD.html`
+  - `cp outputs/weekly/mock/style.css outputs/weekly/weekly_report_YYYY-MM-DD.css`
+
+### 4.2 Allowed Changes
+- 変更可能: テキスト、数値、テーブル行、タブ表示用の最小限クラス追加。
+- 変更禁止:
+  - DOM構造の再設計
+  - 主要クラス名変更
+  - セクション順序変更
+  - Blocker/External Dependency/Technical Debt/Decision/Escalationの表示
+
+### 4.3 Frozen Selectors
+以下のselectorは必須かつ改名禁止。
+- `.page-shell`
+- `.report-header`
+- `.kpi-grid`
+- `.core-domain-grid`
+- `.test-group-details`
+- `.insight-grid`
+- `.overdue-details`
+- `.qualitative-panel`
+- `.member-table`
+
+### 4.4 Required UI Panels
+- KPI Summary Row
+- Domain Summary Grid（テスト関連を除く管理領域）
+- Test Group（折りたたみ/展開可能）
+- Progress / Cost / Risk Panel
+- Milestone / Release Panel
+- Scope Change Panel
+- Team Capacity Panel
+- Weekly Trend Panel
+- Next Actions Panel
+- Overdue Ticket Expandable Table
+- Qualitative Assessment Panel
+- Member SPI/Workload/Tickets Table
+
+### 4.5 Output
+- `outputs/weekly/weekly_report_YYYY-MM-DD.html`
+- `outputs/weekly/weekly_report_YYYY-MM-DD.css`
 
 完了条件:
-- HTMLとCSSが生成済み
-- `design.md` の色、タイポ、レイアウト、コンポーネント方針を満たしている
-- モバイル表示でも可読性が担保されている
+- HTML/CSSが生成済み
+- 単一HTML内で「週次報告タブ」「開発メンバー向け進捗会議タブ」を切替可能
+- `DESIGN.md` の色/タイポ/レイアウト/コンポーネント方針を満たす
+- モバイル表示で可読性を担保
 
 ## STEP 5: 固定化チェックリストレビュー
-- STEP 4で生成したHTML/CSSに対して、以下の固定化チェックを実施する。
-- 以下コマンドを必ず実行する。
+以下コマンドを必ず実行する。
 
 ```bash
 python3 scripts/validate_weekly_output.py --date TO_DATE --root .
 ```
 
-- スクリプトの終了コードが0以外の場合は FAIL とし、必ずSTEP 4へ差し戻す。
+- 終了コードが0以外の場合はFAILでSTEP 4へ差し戻し。
 - 結果は `outputs/weekly/review_checklist_YYYY-MM-DD.md` に記録する。
-
-チェック項目（全件必須）:
-1. 固定テンプレート準拠（`outputs/weekly/mock/index.html` / `style.css` ベース）
-2. KPIに以下が存在: 完了/新規/未完了/バグ/期限超過/工数/SPI/CPI
-3. 領域別サマリー5領域が存在（新規/完了/未完了）
-4. テストグループが折りたたみ/展開可能で、不具合管理/品質/テスト品質を内包する
-5. 進捗にSPI根拠（EV/PV）がある
-6. コストにCPI根拠（EV/AC）と工数差分がある
-7. 期日超過件数と展開可能なチケット一覧がある
-8. リスク（Critical/High/Medium）と対応策がある
-9. 次週アクションが最大3件で担当/期限/成功条件がある
-10. 定性評価（楽観/悲観、残業要否、要員追加要否）がある
-11. 個人別テーブルに今週SPI/今週予定工数/今週実績工数/来週予定工数/来週チケットがある
-12. マイルストーン進捗（残日数/残タスク/オンタイム判定）とリリース状況がある
-13. 変更要求（CR）の発生/承認/保留と影響がある
-14. テスト品質指標（カバレッジ/合格率/検出率または修正率）がある
-15. チーム稼働率（今週実稼働率/来週予定稼働率）がある
-16. 週次トレンド（SPI/CPI/バグ/期限超過の前週比）がある
-17. ブロッカー/外部依存、技術的負債、意思決定・エスカレーションを表示していない
-
-判定ルール:
-- 全項目OK: `review_checklist_YYYY-MM-DD.md` に `PASS` を記載
-- 1項目でもNG: 不足項目を列挙しSTEP 4へ差し戻す（FAILのまま次ステップへ進めない）
-
-出力フォーマット:
-
-```markdown
-# 固定化チェックリスト結果（YYYY-MM-DD）
-
-判定: PASS | FAIL
-
-| No | チェック項目 | 判定 | コメント |
-|---|---|---|---|
-| 1 | 固定テンプレート準拠 | PASS | - |
-```
 
 ## ユーザーへの最終報告
 - 週次報告ファイルのパス

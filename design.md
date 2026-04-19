@@ -171,3 +171,66 @@
 - UIを生成するときは、このファイルを最優先の視覚ルールとして扱う。
 - 週次報告のデータ構造やKPI定義は agent / skill 側を参照し、このファイルでは見た目と情報配置に集中する。
 - 新しい画面を追加しても、色、余白、タイポグラフィ、カードパターンはこのファイルを継承する。
+
+## 15. Template Reproducibility Rules (Strict)
+- 正本テンプレートは outputs/weekly/mock/index.html と outputs/weekly/mock/style.css。
+- 週次HTML/CSSは必ずテンプレート複製を起点にし、データ値差し替えのみを行う。
+- DOMの並び順は以下を固定する。
+  1) Header
+  2) KPI Summary Row
+  3) Domain Summary Grid
+  4) Test Group
+  5) Progress / Cost / Risk / Next Actions
+  6) Overdue Ticket / Qualitative Assessment
+  7) Member Table
+- 単一HTMLタブ化時も「週次報告タブ内のDOM順序」は上記を維持する。
+
+## 16. Frozen Selectors (Do Not Rename)
+- .page-shell
+- .report-header
+- .kpi-grid
+- .kpi-card
+- .core-domain-grid
+- .domain-card
+- .test-group-details
+- .test-group-grid
+- .insight-grid
+- .risk-panel
+- .action-panel
+- .overdue-details
+- .ticket-table
+- .qualitative-panel
+- .member-table
+
+## 17. Allowed vs Forbidden Changes
+### Allowed
+- 数値、文言、チケットID、表行の追加削除
+- 同一セクション内のリスト項目更新
+- タブ実装のための最小限クラス追加（tab-switcher, tab-btn, tab-panel）
+
+### Forbidden
+- 上記 Frozen Selectors の改名/削除
+- セクションの順序変更
+- KPIカードの基本構造変更（タイトル/値/差分/注記）
+- Domain Gridを5領域以外に変更
+- 不要パネル（Blocker/External Dependency/Technical Debt/Decision/Escalation）の追加
+
+## 18. Data-to-UI Mapping Table (Canonical)
+| データソース | UIターゲット | 形式 |
+|---|---|---|
+| weekly_report: KPI | .kpi-grid | 8カード固定 |
+| weekly_report: 領域別サマリー | .core-domain-grid | 5カード固定 |
+| weekly_report: テストグループ | .test-group-details | details内3パネル |
+| weekly_report: 進捗/コスト/リスク | .insight-grid | 4カード（Action含む） |
+| weekly_report: 期日超過 | .overdue-details .ticket-table | 展開可能テーブル |
+| weekly_report: 定性評価 | .qualitative-panel | 楽観/悲観 |
+| weekly_report: 個人別サマリー | .member-table | 列固定テーブル |
+| dev_progress_meeting | 会議タブ | 単一HTML切替 |
+
+## 19. Deterministic QA
+- 生成後に validate_weekly_output.py を必ず実行する。
+- 追加で以下を確認する。
+  - Frozen Selectors が全て存在
+  - セクション順序が mock と一致
+  - モバイル（<=640px）で 1 カラム化される
+- FAIL時はHTML再生成ではなく、テンプレート複製起点に戻して差し替えをやり直す。
