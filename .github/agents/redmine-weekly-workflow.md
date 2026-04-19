@@ -42,8 +42,12 @@ STEP 3: 品質レビュー（最大3回ループ）
 
 STEP 4: 静的HTML生成
   - design.md を最優先のデザインルールとして参照
-  - 週次報告MarkdownをHTMLへ変換
+  - 固定テンプレートへデータを差し込む（新規デザイン生成は禁止）
   - 出力: outputs/weekly/weekly_report_YYYY-MM-DD.html
+
+STEP 5: 固定化チェックリストレビュー
+  - validate_weekly_output.py を実行して自動チェック
+  - 出力: outputs/weekly/review_checklist_YYYY-MM-DD.md
 ```
 
 ## 実行前チェック
@@ -73,13 +77,18 @@ STEP 4: 静的HTML生成
 
 ## STEP 4: 静的HTML生成
 - `design.md` を最優先のデザインルールとして必ず参照する。
-- `outputs/weekly/weekly_report_YYYY-MM-DD.md` の内容を、`design.md` のルールに従って静的HTMLへ変換する。
+- `outputs/weekly/mock/index.html` と `outputs/weekly/mock/style.css` を固定テンプレートとして扱う。
+- HTML/CSSはテンプレート複製を起点にし、データ値のみ差し替える。
+- DOM構造・主要クラス名・セクション順序を変更しない。
+- `outputs/weekly/weekly_report_YYYY-MM-DD.md` の内容を、テンプレートの各項目へマッピングして反映する。
 - UI実装時は以下を満たすこと:
   - KPI Summary Row
   - Domain Summary Grid
-  - Progress / Quality / Risk Panel
+  - Progress / Quality / Cost / Risk Panel
   - Next Actions Panel
-  - Ticket Table
+  - Overdue Ticket Expandable Table
+  - Qualitative Assessment Panel
+  - Member SPI/Workload/Tickets Table
 - 出力ファイル:
   - outputs/weekly/weekly_report_YYYY-MM-DD.html
   - outputs/weekly/weekly_report_YYYY-MM-DD.css
@@ -89,9 +98,49 @@ STEP 4: 静的HTML生成
 - `design.md` の色、タイポ、レイアウト、コンポーネント方針を満たしている
 - モバイル表示でも可読性が担保されている
 
+## STEP 5: 固定化チェックリストレビュー
+- STEP 4で生成したHTML/CSSに対して、以下の固定化チェックを実施する。
+- 以下コマンドを必ず実行する。
+
+```bash
+python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
+```
+
+- スクリプトの終了コードが0以外の場合は FAIL とし、必ずSTEP 4へ差し戻す。
+- 結果は `outputs/weekly/review_checklist_YYYY-MM-DD.md` に記録する。
+
+チェック項目（全件必須）:
+1. 固定テンプレート準拠（`outputs/weekly/mock/index.html` / `style.css` ベース）
+2. KPIに以下が存在: 完了/新規/未完了/バグ/期限超過/工数/SPI/CPI
+3. 領域別サマリー6領域が存在（新規/完了/未完了）
+4. 進捗にSPI根拠（EV/PV）がある
+5. コストにCPI根拠（EV/AC）と工数差分がある
+6. 期日超過件数と展開可能なチケット一覧がある
+7. リスク（Critical/High/Medium）と対応策がある
+8. 次週アクションが最大3件で担当/期限/成功条件がある
+9. 定性評価（楽観/悲観、残業要否、要員追加要否）がある
+10. 個人別テーブルに今週SPI/今週予定工数/今週実績工数/来週予定工数/来週チケットがある
+
+判定ルール:
+- 全項目OK: `review_checklist_YYYY-MM-DD.md` に `PASS` を記載
+- 1項目でもNG: 不足項目を列挙しSTEP 4へ差し戻す（FAILのまま次ステップへ進めない）
+
+出力フォーマット:
+
+```markdown
+# 固定化チェックリスト結果（YYYY-MM-DD）
+
+判定: PASS | FAIL
+
+| No | チェック項目 | 判定 | コメント |
+|---|---|---|---|
+| 1 | 固定テンプレート準拠 | PASS | - |
+```
+
 ## ユーザーへの最終報告
 - 週次報告ファイルのパス
 - 静的HTMLファイルのパス
+- 固定化チェックリストファイルのパス
 - 領域別サマリー
-- KPI要約（完了/新規/未完了/バグ/工数）
+- KPI要約（完了/新規/未完了/バグ/工数/SPI/CPI/期限超過）
 - 次週アクション3件
