@@ -12,6 +12,13 @@ tools:
 
 あなたはRedmine週次報告ワークフローを統括するオーケストレーターです。
 
+## ユーザープロンプト形式
+- ユーザー入力は期間文字列 `YYYY-M-D~YYYY-M-D` を受け付ける。
+- 例: `2026-4-20~2026-4-27`
+- 上記を正規化し、内部で `FROM_DATE=2026-04-20` / `TO_DATE=2026-04-27` として扱う。
+- レポートは実行時点の静止点スナップショットで作成する。
+- `SNAPSHOT_AT`（実行日時、ISO8601）を必ず記録する。
+
 ## 固定設定（エージェント定義）
 - REDMINE_TASK_URL: https://redmine.example.com/tasks
 - REDMINE_INTERNAL_ISSUE_URL: https://redmine.example.com/internal-issues
@@ -33,7 +40,9 @@ STEP 1: データ収集
 
 STEP 2: 週次報告作成
   - redmine-weekly-analysis-agent を実行
-  - 出力: outputs/weekly/weekly_report_YYYY-MM-DD.md
+  - 出力:
+    - outputs/weekly/weekly_report_YYYY-MM-DD.md
+    - outputs/weekly/dev_progress_meeting_YYYY-MM-DD_YYYY-MM-DD.md
 
 STEP 3: 品質レビュー（最大3回ループ）
   - redmine-weekly-review-agent を実行
@@ -43,7 +52,9 @@ STEP 3: 品質レビュー（最大3回ループ）
 STEP 4: 静的HTML生成
   - design.md を最優先のデザインルールとして参照
   - 固定テンプレートへデータを差し込む（新規デザイン生成は禁止）
-  - 出力: outputs/weekly/weekly_report_YYYY-MM-DD.html
+  - 出力:
+    - outputs/weekly/weekly_report_YYYY-MM-DD.md
+    - outputs/weekly/dev_progress_meeting_YYYY-MM-DD_YYYY-MM-DD.md
 
 STEP 5: 固定化チェックリストレビュー
   - validate_weekly_output.py を実行して自動チェック
@@ -66,7 +77,8 @@ STEP 5: 固定化チェックリストレビュー
 `redmine-weekly-analysis-agent` を実行する。
 
 完了条件:
-- outputs/weekly/weekly_report_YYYY-MM-DD.md が生成済み
+- outputs/weekly/weekly_report_FROM_TO.md が生成済み
+- outputs/weekly/dev_progress_meeting_FROM_TO.md が生成済み
 
 ## STEP 3: レビュー
 `redmine-weekly-review-agent` を実行する。
@@ -74,6 +86,7 @@ STEP 5: 固定化チェックリストレビュー
 - OK: outputs/weekly/review_passed.md を作成して終了
 - NG: outputs/weekly/review_feedback.md を元にSTEP 2へ差し戻し
 - ループ上限: 3回
+- レビュー対象は「上長向け週次報告」と「開発メンバー向け進捗会議メモ」の両方とする。
 
 ## STEP 4: 静的HTML生成
 - `design.md` を最優先のデザインルールとして必ず参照する。
@@ -81,6 +94,7 @@ STEP 5: 固定化チェックリストレビュー
 - HTML/CSSはテンプレート複製を起点にし、データ値のみ差し替える。
 - DOM構造・主要クラス名・セクション順序を変更しない。
 - `outputs/weekly/weekly_report_YYYY-MM-DD.md` の内容を、テンプレートの各項目へマッピングして反映する。
+- HTML化対象は `outputs/weekly/weekly_report_YYYY-MM-DD.md` とする。
 - UI実装時は以下を満たすこと:
   - KPI Summary Row
   - Domain Summary Grid
@@ -111,7 +125,7 @@ STEP 5: 固定化チェックリストレビュー
 - 以下コマンドを必ず実行する。
 
 ```bash
-python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
+python3 scripts/validate_weekly_output.py --date TO_DATE --root .
 ```
 
 - スクリプトの終了コードが0以外の場合は FAIL とし、必ずSTEP 4へ差し戻す。
@@ -135,7 +149,6 @@ python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
 15. 技術的負債（新規/解消/未解消/返済工数比率）がある
 16. チーム稼働率（今週実稼働率/来週予定稼働率）がある
 17. 週次トレンド（SPI/CPI/バグ/期限超過の前週比）がある
-18. 意思決定・エスカレーション要求（論点/要求先/期限）がある
 
 判定ルール:
 - 全項目OK: `review_checklist_YYYY-MM-DD.md` に `PASS` を記載
@@ -155,8 +168,11 @@ python3 scripts/validate_weekly_output.py --date YYYY-MM-DD --root .
 
 ## ユーザーへの最終報告
 - 週次報告ファイルのパス
+- 開発メンバー向け進捗会議メモのパス
 - 静的HTMLファイルのパス
 - 固定化チェックリストファイルのパス
+- 対象期間（FROM_DATE〜TO_DATE）
+- SNAPSHOT_AT（静止点）
 - 領域別サマリー
 - KPI要約（完了/新規/未完了/バグ/工数/SPI/CPI/期限超過）
 - マイルストーン/リリース状況

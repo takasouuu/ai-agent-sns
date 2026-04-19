@@ -12,6 +12,7 @@ tools:
 
 ## 入力
 - outputs/weekly/weekly_report_YYYY-MM-DD.md
+- outputs/weekly/dev_progress_meeting_YYYY-MM-DD_YYYY-MM-DD.md
 - tmp_analysis/redmine_task_issues.json
 - tmp_analysis/redmine_internal_issues.json
 - tmp_analysis/redmine_external_issues.json
@@ -41,8 +42,9 @@ tools:
 14. 変更要求（CR）の発生/承認/保留と影響が記載されている
 15. テスト品質指標（カバレッジ/合格率/検出率または修正率）が記載されている
 16. ブロッカー/外部依存の詳細と待機日数・影響が記載されている
-17. 技術的負債と返済工数比率、チーム稼働率が記載されている
-18. 週次トレンド（前週比）と意思決定・エスカレーション要求が記載されている
+17. 週次トレンド（前週比）が記載されている
+18. 上長向け週次報告ファイルが生成され、対象期間とSNAPSHOT_ATが明記されている
+19. 開発メンバー向け進捗会議メモが生成され、担当別進捗・割り込み・品質懸念・次アクションが記載されている
 
 ## 判定
 - 全項目OK: review_passed.md を作成
