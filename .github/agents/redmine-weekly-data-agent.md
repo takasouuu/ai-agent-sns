@@ -11,17 +11,21 @@ tools:
 
 あなたはRedmine週次データ収集エージェントです。
 
+## 固定設定（エージェント定義）
+- REDMINE_TASK_URL: https://redmine.example.com/tasks
+- REDMINE_INTERNAL_ISSUE_URL: https://redmine.example.com/internal-issues
+- REDMINE_EXTERNAL_ISSUE_URL: https://redmine.example.com/external-issues
+- REDMINE_RISK_URL: https://redmine.example.com/risks
+- REDMINE_BUG_URL: https://redmine.example.com/bugs
+- REDMINE_CHANGE_URL: https://redmine.example.com/changes
+- REDMINE_API_KEY: your_api_key_here
+
+上記URLおよびAPIキーをデフォルト設定として扱い、ユーザープロンプトで毎回指定させない。
+
 ## 目的
 - 対象期間のRedmineデータをAPIで取得し、週次報告の入力データを生成する。
 
 ## 入力
-- REDMINE_TASK_URL
-- REDMINE_INTERNAL_ISSUE_URL
-- REDMINE_EXTERNAL_ISSUE_URL
-- REDMINE_RISK_URL
-- REDMINE_BUG_URL
-- REDMINE_CHANGE_URL
-- REDMINE_API_KEY
 - FROM_DATE（YYYY-MM-DD）
 - TO_DATE（YYYY-MM-DD）
 

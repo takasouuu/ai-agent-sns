@@ -107,12 +107,7 @@ GitHub Copilot Chat を **Agent モード** にして、以下のプロンプト
 ```
 @redmine-weekly-workflow Redmine APIを使って週次報告を作成してください。
 対象期間は 2026-04-13 から 2026-04-19 です。
-REDMINE_TASK_URL: https://redmine.example.com/tasks
-REDMINE_INTERNAL_ISSUE_URL: https://redmine.example.com/internal-issues
-REDMINE_EXTERNAL_ISSUE_URL: https://redmine.example.com/external-issues
-REDMINE_RISK_URL: https://redmine.example.com/risks
-REDMINE_BUG_URL: https://redmine.example.com/bugs
-REDMINE_CHANGE_URL: https://redmine.example.com/changes
+RedmineのURLはエージェント設定ファイル定義を参照してください。
 ```
 
 ---
@@ -123,13 +118,8 @@ REDMINE_CHANGE_URL: https://redmine.example.com/changes
 @redmine-weekly-data-agent Redmine APIから週次報告データを取得してください。
 FROM_DATE: 2026-04-13
 TO_DATE: 2026-04-19
-REDMINE_TASK_URL: https://redmine.example.com/tasks
-REDMINE_INTERNAL_ISSUE_URL: https://redmine.example.com/internal-issues
-REDMINE_EXTERNAL_ISSUE_URL: https://redmine.example.com/external-issues
-REDMINE_RISK_URL: https://redmine.example.com/risks
-REDMINE_BUG_URL: https://redmine.example.com/bugs
-REDMINE_CHANGE_URL: https://redmine.example.com/changes
 領域別issueファイルと工数ファイルを tmp_analysis 配下に保存してください。
+RedmineのURLはエージェント設定ファイル定義を参照してください。
 ```
 
 ---
